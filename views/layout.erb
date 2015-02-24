@@ -6,6 +6,7 @@
   <body>
     <div class="container">
       <a href="/">Home</a>
+      <a href="/add_song">Suggest a Song</a>
       <% if current_user %>
         <p>Logged in as: <%= current_user.email %></p>
         <form action="/users/logout" method="POST">

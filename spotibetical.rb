@@ -60,8 +60,8 @@ class Spotibetical < Sinatra::Base
       @error = true
       erb :add_song
     end
-    binding.pry
   end
+  binding.pry
 end
 
 Spotibetical.run!
