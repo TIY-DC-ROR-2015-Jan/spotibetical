@@ -12,4 +12,10 @@ class SongTest < MiniTest::Test
     assert_equal s.spotify_id, "1Z5rTFsClLFgsIGuZ7Ymt2"
   end
 
+  def test_addsong_adds_song
+    u = User.create! name: 'Brit Butler', email: 'brit@kingcons.io', password: 'hunter2'
+    u.addsong "1kNaeeLr7uxdmER8XDS928"
+
+    assert_equal Song.first.title, "Cairo"
+  end
 end
