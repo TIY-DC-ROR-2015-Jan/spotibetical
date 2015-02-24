@@ -3,7 +3,6 @@ require 'pry'
 
 require './db/setup'
 require './lib/all'
-binding.pry
 class Spotibetical < Sinatra::Base
   enable :sessions, :method_override
   set :session_secret, 'super secret'
@@ -23,6 +22,7 @@ class Spotibetical < Sinatra::Base
   end
 
   post '/users/login' do
+    binding.pry
     user = User.where(
       email:    params[:email],
       password: params[:password]
@@ -42,16 +42,25 @@ class Spotibetical < Sinatra::Base
     redirect to('/')
   end
 
-  post '/addsong' do
-    spotify_id = params[:spotify_id]
+  get '/add_song' do
+    erb :add_song
+  end
 
-    if songs.find_by(spotify_id: spotify_id).count > 0
-      @error = true
-      erb :addsong
+  post '/add_song' do
+    spotify_id = params[:spotify_id]
+    binding.pry
+
+    if Song.find_by(spotify_id: spotify_id).nil?
+      binding.pry
+            current_user.addsong spotify_id
+
+      erb :add_song
     else
-      current_user.addsong spotify_id
-      erb :addsong
+      binding.pry
+      @error = true
+      erb :add_song
     end
+    binding.pry
   end
 end
 
