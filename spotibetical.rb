@@ -47,13 +47,8 @@ class Spotibetical < Sinatra::Base
   end
 
   patch '/vote' do
-    if current_user.vote_count >= params['songs'].count
-      params['songs'].each do |song|
-        current_user.votes.create!(song_id: song)
-        current_user.vote_count -= 1
-        current_user.save!
+    current_user.vote params["songs"]
       erb :voting
-    end
   end
     
     

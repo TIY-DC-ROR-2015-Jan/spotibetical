@@ -1,4 +1,5 @@
 require './test/helper'
+require 'pry'
 
 class UserTest < MiniTest::Test
   def setup
@@ -18,16 +19,26 @@ class UserTest < MiniTest::Test
   end
 
   def test_songs_save_vote_counts
-    u = User.first
-    s = Song.first
-    assert_equal s.votes.count, 0
-    u.votes.create!(song_id: s.id)
-    asser_equal s.votes, 1
+    u = User.create! name: 'Brit Butler', email: 'brit@kingcons.io', password: 'password'
+    s = Song.create! artist: 'The Faint', title: 'Dress Code', user_id: 1
+    Vote.create!(song_id: s.id, user_id: u.id)
+    assert_equal s.votes.count, 1
   end
 
-  # def test_user_can_vote
-  # end
+  def test_vote_count_decreases_after_vote
+    u = User.create! name: 'Brit Butler', email: 'brit@kingcons.io', password: 'password'
+    s = Song.create! artist: 'The Faint', title: 'Dress Code', user_id: 1
+    u.votes.create!(song_id: s.id)
+    u.vote_count -= 1
+    u.save!
+    assert u.vote_count < 10
+  end
 
-  # def test_user_cannot_vote_more_than_vote_count
-  # end
+  def test_user_cannot_vote_more_than_vote_count
+    u = User.create! name: 'Brit Butler', email: 'brit@kingcons.io', password: 'password'
+    s = Song.create! artist: 'The Faint', title: 'Dress Code', user_id: 1
+    u.vote_count = 1
+    u.vote [s.id, s.id]
+    assert_equal s.votes.count, 0
+  end
 end
