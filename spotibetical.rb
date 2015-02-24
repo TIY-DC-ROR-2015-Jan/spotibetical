@@ -42,13 +42,13 @@ class Spotibetical < Sinatra::Base
     redirect to('/')
   end
 
+# this demos what the voting button looks like
   get '/vote' do
     erb :voting
   end
 
   patch '/vote' do
     current_user.vote params["songs"]
-      erb :voting
   end
     
     
