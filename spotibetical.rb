@@ -33,6 +33,7 @@ class Spotibetical < Sinatra::Base
       redirect to('/')
     else
       @error = true
+      status 422
       erb :login
     end
   end
@@ -43,4 +44,4 @@ class Spotibetical < Sinatra::Base
   end
 end
 
-Spotibetical.run!
+Spotibetical.run! if $PROGRAM_NAME == __FILE__
