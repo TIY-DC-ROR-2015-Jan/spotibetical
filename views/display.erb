@@ -1,0 +1,29 @@
+<h1>Suggested Songs</h1>
+<table>
+	<thead>
+		<tr>
+		<th>Artist</th>
+		<th>Title</th>
+		<th>Preview</th>
+		<th>Current Votes</th>
+		<% if current_user %>
+			<th>Vote</th>
+			<th>Veto</th>
+		<% end %>
+		</tr>
+	</thead>
+	<tbody>
+		<% @songs.each do |song| %>
+			<tr>
+				<td><%= song["artist"]%></td>
+				<td><%= song["title"]%></td>
+				<td><%= song["spotify_link"]%></td>
+				<td><% #votes["count"]%></td>
+				<% if current_user %>
+					<td><% #song["to_vote"]%></td>
+					<td><% #veto["button"]%></td>
+				<% end %>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
