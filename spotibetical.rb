@@ -48,10 +48,17 @@ class Spotibetical < Sinatra::Base
   end
 
   patch '/vote' do
-    current_user.vote params["songs"]
+    if current_user
+      current_user.vote params["songs"]
+    end
   end
-    
+
+  patch '/veto' do
+    if current_user
+      current_user.veto! params["song_id"]
+    end
+  end
     
   end
 
-Spotibetical.run!
+Spotibetical.run! if $PROGRAM_NAME == __FILE__

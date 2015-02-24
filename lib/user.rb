@@ -15,4 +15,12 @@ class User < ActiveRecord::Base
       end
     end
   end
+
+  def veto! song_id
+    if self.veto_count > 0
+      Song.find(song_id).update(veto: true)
+      self.veto_count -= 1
+      self.save!
+    end
+  end
 end
