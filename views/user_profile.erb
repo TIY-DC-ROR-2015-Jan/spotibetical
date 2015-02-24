@@ -1,26 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>User Profile</title>
-  <style type="text/css">
-    body { font-family:Helvetica, Arial, sans-serif; font-size: 13px;}
-    .fld_label {display:inline-block; width:72px; text-align:right; padding-right:0.5em; font-size: 11px;}
-    .data {}
-    div > label {font-size:11px; display:inline-block; width:86px; text-align:right; padding-right:0.5em;}
-    td:first-child { font-size: 11px; text-align: right; vertical-align: baseline;}
-  </style>
-</head>
-<body>
-<div>
-  <p><span class="fld_label">Name:</span><span class="data"><%= @u.name %></span></p>
-  <p><span class="fld_label">Email:</span><span class="data"><%= @u.email %></span></p>
-  <p><span class="fld_label">Avatar URL:</span><span class="data"><%= @u.avatar_url %></span></p>
-  <p><span class="fld_label">Bio:</span><span class="data"><%= @u.bio %></span></p>
-  <p><span class="fld_label">Home State:</span><span class="data"><%= @u.home_state %></span></p>
-  <p><span class="fld_label">Zodiac Sign:</span><span class="data"><%= @u.zodiac_sign %></span></p>
-  <p><span class="fld_label">Favorite Song:</span><span class="data"><%= @u.favorite_song_url %></span></p>
-  <div><a href="/users/profile/edit"><button name="search" type="edit" value="1" id="edit">Edit</button></a></div>
-</div>
-</body>
-</html>
+<style type="text/css">.fld_label {display:inline-block; color:#666; width:10em; text-align:right; padding-right:0.5em; font-size: 90%;}</style>
+<div class="container">
+	<div class="row">
+		<p><span class="fld_label">Name:</span><span class="data"><%= @u.name %></span><img align="right" src="<%= @u.avatar_url %>" alt="" class="img-thumbnail"></p>
+		<p><span class="fld_label">Email:</span><span class="data"><%= @u.email %></span></p>
+		<p><span class="fld_label">Avatar URL:</span><span class="data"><%= @u.avatar_url %></span></p>
+		<p><span class="fld_label">Bio:</span><span class="data"><%= @u.bio %></span></p>
+		<p><span class="fld_label">Home State:</span><span class="data"><%= @u.home_state %></span></p>
+		<p><span class="fld_label">Zodiac Sign:</span><span class="data"><%= @u.zodiac_sign %></span></p>
+		<p><span class="fld_label">Favorite Song:</span><span class="data"><%= @u.favorite_song_url %></span></p>
+		<div>
+
+		<div style="padding: 2em 0em;">
+			<form method="post" action="/users/profile/edit"><button class="btn btn-default" type="submit">Edit My Profile</button></form>
+		</div>
+  
+  </div> <!-- ./row -->
+</div> <!-- ./container -->
+
