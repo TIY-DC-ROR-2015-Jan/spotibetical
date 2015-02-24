@@ -4,6 +4,11 @@ class CreateDataModel < ActiveRecord::Migration
       t.string :email, null: false
       t.string :password, null: false
       t.string :name
+      t.string :avatar_url
+      t.text   :bio
+      t.string :home_state
+      t.string :zodiac_sign
+      t.string :favorite_song_url
     end
 
     create_table :songs do |t|
