@@ -16,4 +16,18 @@ class UserTest < MiniTest::Test
     loaded_user = User.find u.id
     assert_equal loaded_user.songs.first.title, "Dress Code"
   end
+
+  def test_songs_save_vote_counts
+    u = User.first
+    s = Song.first
+    assert_equal s.votes.count, 0
+    u.votes.create!(song_id: s.id)
+    asser_equal s.votes, 1
+  end
+
+  # def test_user_can_vote
+  # end
+
+  # def test_user_cannot_vote_more_than_vote_count
+  # end
 end

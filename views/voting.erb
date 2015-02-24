@@ -1,0 +1,13 @@
+<h1>VOTING!!!!!</h1>
+
+<form id='voting' action='/votes' method='POST'>
+	<input type="hidden" name ='_method' value='PATCH'>
+	<div class='checkbox'>
+		<label>
+			<input name="songs[]" type='checkbox'>VOTE
+		</label>
+	</div>
+</form>
+
+
+<button form='voting' class="btn btn-danger">Submit Vote</button>

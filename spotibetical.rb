@@ -41,6 +41,22 @@ class Spotibetical < Sinatra::Base
     session.delete :user_id
     redirect to('/')
   end
-end
+
+  get '/vote' do
+    erb :voting
+  end
+
+  patch '/vote' do
+    if current_user.vote_count >= params['songs'].count
+      params['songs'].each do |song|
+        current_user.votes.create!(song_id: song)
+        current_user.vote_count -= 1
+        current_user.save!
+      erb :voting
+    end
+  end
+    
+    
+  end
 
 Spotibetical.run!
