@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Spotibetical</title>
+  </head>
+  <body>
+    <div class="container">
+      <a href="/">Home</a>
+      <% if current_user %>
+        <p>Logged in as: <%= current_user.email %></p>
+        <form action="/users/logout" method="POST">
+          <input type="hidden" name="_method" value="DELETE">
+          <button class="btn btn-sm btn-danger">Log out</button>
+        </form>
+      <% else %>
+        <a href="/users/login">Login</a>
+      <% end %>
+
+      <%= yield %>
+    </div>
+  </body>
+</html>
