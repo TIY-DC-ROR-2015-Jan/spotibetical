@@ -51,9 +51,10 @@ class Spotibetical < Sinatra::Base
     # The vote group said adding songs uses a vote so we need to check the user has votes left here
     if Song.find_by(spotify_id: spotify_id).nil?
       current_user.addsong spotify_id
-      erb :add_song
+      #erb :add_song
+      redirect to('/add_song')
     else
-      @error = true
+      @error = "Somebody already suggested that. Be original."
       erb :add_song
     end
   end
