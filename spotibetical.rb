@@ -56,6 +56,7 @@ class Spotibetical < Sinatra::Base
   end
 
   get '/display/sort' do
+  
     @songs = []
     if params["alpha"] == true.to_s
       song_list = Song.all
@@ -63,7 +64,7 @@ class Spotibetical < Sinatra::Base
       t = s.sort_by{|k,v| k}
       t.each {|a| @songs << a[1]}
     end
-    if params["recent"]
+    if params["recent"] == true.to_s
       @songs = Song.order(created_at: :desc)
     end
     @songs
