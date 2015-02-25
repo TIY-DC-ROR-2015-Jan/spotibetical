@@ -13,11 +13,13 @@ class Song < ActiveRecord::Base
     where(veto: false)
   end
 
-  def self.artist_order(limit=PAGE_SIZE)
+  def self.artist_order(limit=nil)
+    limit ||= PAGE_SIZE
     Song.order(artist: :asc).first limit
   end
 
-  def self.most_recent(limit=PAGE_SIZE)
+  def self.most_recent(limit=nil)
+    limit ||= PAGE_SIZE
     Song.order(created_at: :desc).first limit
   end
 

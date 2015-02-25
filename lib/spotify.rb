@@ -1,4 +1,4 @@
-class  Spotify
+class Spotify
 require 'httparty'
 require 'pry'
 

@@ -72,17 +72,21 @@ class Spotibetical < Sinatra::Base
   end
 
   get '/display' do
-  
-    @songs = []
-    case  
-    when params["sort"] == "alpha"
+
+    if params["sort"] == "alpha"
       @songs = Song.artist_order(params["limit"])
     else #set recent to default (same as 'when == "recent"')
       @songs = Song.most_recent(params["limit"]) #for testing, making this "song_id", but could also be created_at
     end
-    @songs
+
     erb :display
   end
+
+  # get '/display/preview' do
+  #   s = Spotify.find_song params['spotify_id']
+  #   redirect to(s["preview_link"])
+
+  # end
 
 
   get '/add_song' do
