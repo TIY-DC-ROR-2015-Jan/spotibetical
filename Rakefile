@@ -12,9 +12,11 @@ class String
   end
 end
 
+# `rake test` or just `rake` should run all tests in the test folder
 Rake::TestTask.new do |t|
   t.pattern = "test/*_test.rb"
 end
+task default: [:test]
 
 desc "Run migrations"
 namespace :db do
