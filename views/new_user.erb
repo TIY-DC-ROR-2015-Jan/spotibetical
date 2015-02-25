@@ -1,0 +1,44 @@
+<div class="container">
+	<div class="col-sm-10">
+		<h2>Create new user account</h2>
+		
+		<% if @success %>
+		<p class="lead"><%= @success %></p>
+		<% else %>
+		<p class="lead">Enter the user's information below.</p>
+		<form class="form-horizontal" action="/" method="POST" role="form">
+
+      <div class="form-group">
+				<label for="name" class="col-sm-2 control-label">Name</label>
+				<div class="col-sm-6">
+					<input class="form-control" name="name">
+				</div>
+				<p class="help-block">Enter the user's name.</p>
+			</div>
+      
+      <div class="form-group">
+				<label for="name" class="col-sm-2 control-label">Email</label>
+				<div class="col-sm-6">
+					<input class="form-control" name="email">
+				</div>
+				<p class="help-block">Enter the user's email.</p>
+			</div>
+			
+			<div class="form-group">
+				<label for="name" class="col-sm-2 control-label">Password</label>
+				<div class="col-sm-6">
+					<input class="form-control" name="password"><%= 'a'..'z').to_a.shuffle[0,8 + rand(4)].join %>
+				</div>
+				<p class="help-block">The user's password is randomly generated.</p>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-8">
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</div>
+		</form>
+		
+		<% end %>
+	</div>
+</div>
