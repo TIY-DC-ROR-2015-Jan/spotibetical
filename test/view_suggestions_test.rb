@@ -17,7 +17,6 @@ class ViewSuggestionsTest < MiniTest::Test
     x = Song.create! artist: 'jbc', title: '123', spotify_link: 'google.com', user_id: 2, spotify_id: '-'
 
     assert x.id
-    assert x.class == Integer
   end
 
   def test_songs_can_be_sorted
