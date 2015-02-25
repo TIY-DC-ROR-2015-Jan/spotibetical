@@ -13,6 +13,15 @@ class Spotibetical < Sinatra::Base
     end
   end
 
+  def ensure_admin!
+    if current_user.admin == true
+      next
+    else
+      "404 Not found."
+      redirect '/'
+    end
+  end
+
   get '/' do
     erb :home
   end
@@ -118,6 +127,47 @@ class Spotibetical < Sinatra::Base
       current_user.veto! params["song_id"]
     end
   end
+
+  get '/create_account' do
+    ensure_admin!
+    erb :new_user
+  end
+
+#now admin enter username and email, later pull from github?
+  post '/create_account' do
+    ensure_admin!
+    if User.create(name: params["name"], email: params["email"], password: params["password"]).save
+      @success = "You have successfully added a new user."
+      redirect '/create_account'
+    else
+      "User creation failed. Please try again."
+    end
+  end
+
+  # get '/delete_account' do
+    # ensure_admin!
+    # erb :delete_user
+    # what does this mean?
+  # end
+
+  get '/update_admin' do
+    ensure_admin!
+    @users = User.all
+    erb :update_admin
+  end
+
+  patch '/update_admin' do
+    ensure_admin!
+    if params["action"] == "enable"
+      User.find(params["id"]).update(admin: true)
+      redirect '/update_admin'
+    elsif params["action"] == "disable"
+      User.find(params["id"]).update(admin: false)
+    else
+      return "Something went wrong. Please try again."
+    end
+  end
+
 end
 
 Spotibetical.run! if $PROGRAM_NAME == __FILE__
