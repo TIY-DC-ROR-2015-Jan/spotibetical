@@ -12,9 +12,4 @@ require 'pry'
     }
   end
 
-  def get_song_info
-
-    artist = song["artists"][0]["name"]
-    track = song["name"]
-  end
 end

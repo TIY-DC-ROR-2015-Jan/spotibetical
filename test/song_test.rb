@@ -16,8 +16,9 @@ class SongTest < MiniTest::Test
   end
 
   def test_songs_have_spotify_id
-    s = create_song! artist: 'The Pogues', title: 'If I Should Fall From Grace With God', spotify_id: "1Z5rTFsClLFgsIGuZ7Ymt2"
-    assert_equal s.spotify_id, "1Z5rTFsClLFgsIGuZ7Ymt2"
+    post '/users/login', email: 'brit@kingcons.io', password: 'hunter2'
+    post '/add_song', spotify_id: "0cgz0Fa7bivUEwqI5Srj1P"
+    assert_equal Song.first.spotify_id, "0cgz0Fa7bivUEwqI5Srj1P"
   end
 
   def test_addsong_adds_song
@@ -47,5 +48,4 @@ class SongTest < MiniTest::Test
     end
     assert_equal song_ids.uniq!, nil
   end
-
 end
