@@ -1,5 +1,4 @@
 <h1>Suggested Songs</h1>
-<h3>
 <form style='float: left; padding: 5px;' action="/display" method="GET">
 	<input name="sort" value="alpha" type="hidden">
 	<button class="btn btn-sm btn-primary">Sort by artist name</button>
@@ -27,10 +26,9 @@
 				<td><%= song["artist"]%></td>
 				<td><%= song["title"]%></td>
 				<td><%= song["spotify_link"]%></td>
-				<td><%= song.votes.count%></td>
+				<td><% #votes["count"]%></td>
 				<% if current_user %>
-				<!-- add veto and voting buttons from vote feature -->
-					<td><% #voting["button"]%></td>
+					<td><% #song["to_vote"]%></td>
 					<td><% #veto["button"]%></td>
 				<% end %>
 		</tr>
