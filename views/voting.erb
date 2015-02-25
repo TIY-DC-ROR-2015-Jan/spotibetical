@@ -1,0 +1,21 @@
+<h1>VOTING!!!!!</h1>
+
+<form id='voting' action='/vote' method='POST'>
+	<input type="hidden" name ='_method' value='PATCH'>
+	<div class='checkbox'>
+		<label>
+			<% song_id = 1 %>
+			<input name="songs[]" type='checkbox' value=<%=song_id%>>VOTE
+		</label>
+	</div>
+</form>
+
+
+<button form='voting' class="btn btn-danger">Submit Vote</button>
+
+<form action='/veto' method='POST'>
+<% song_id = 1 %>
+	<input type='hidden' name='_method' value='PATCH'>
+	<input type='hidden' name='song_id' value=<%=song_id%>>
+		<button class="btn btn-danger">VETO</button>
+</form>

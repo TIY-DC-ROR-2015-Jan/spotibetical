@@ -101,6 +101,23 @@ class Spotibetical < Sinatra::Base
       erb :add_song
     end
   end
+
+  # this demos what the voting button looks like
+  get '/vote' do
+    erb :voting
+  end
+
+  patch '/vote' do
+    if current_user
+      current_user.vote params["songs"]
+    end
+  end
+
+  patch '/veto' do
+    if current_user
+      current_user.veto! params["song_id"]
+    end
+  end
 end
 
 Spotibetical.run! if $PROGRAM_NAME == __FILE__
