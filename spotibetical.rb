@@ -22,6 +22,34 @@ class Spotibetical < Sinatra::Base
     erb :login
   end
 
+  get '/users/profile' do
+    if current_user
+      erb :user_profile
+    else
+      redirect to('/users/login')
+    end 
+  end
+
+  get '/users/profile/edit' do
+    if current_user
+      erb :user_profile_edit
+    else
+      redirect to('/users/login')
+    end 
+  end
+
+  patch '/users/profile/edit' do
+    if current_user
+      u = current_user
+      present_params = params.select { |k,v| v != "" }
+      present_params.delete "_method"
+      u.update present_params if present_params.any?
+      redirect to('/users/profile')
+    else
+      redirect to('/users/login')
+    end
+  end
+
   post '/users/login' do
     user = User.where(
       email:    params[:email],

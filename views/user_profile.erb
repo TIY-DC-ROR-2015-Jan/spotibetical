@@ -1,0 +1,23 @@
+<style type="text/css">.fld_label {display:inline-block; color:#666; width:10em; text-align:right; padding-right:0.5em; font-size: 90%;}</style>
+<div class="container">
+	<div class="row">
+		<p><span class="fld_label">Name:</span><span class="data"><%= current_user.name %></span><img align="right" src="<%= current_user.avatar_url %>" alt="" class="img-thumbnail"></p>
+		<p><span class="fld_label">Email:</span><span class="data"><%= current_user.email %></span></p>
+		<p><span class="fld_label">Avatar URL:</span><span class="data"><%= current_user.avatar_url %></span></p>
+		<p><span class="fld_label">Bio:</span><span class="data"><%= current_user.bio %></span></p>
+		<p><span class="fld_label">Home State:</span><span class="data"><%= current_user.home_state %></span></p>
+		<p><span class="fld_label">Zodiac Sign:</span><span class="data"><%= current_user.zodiac_sign %></span></p>
+		<p><span class="fld_label">Favorite Song:</span><span class="data"><a href="<%= current_user.favorite_song_url %>"><%= current_user.favorite_song_url %></a></span></p>
+		<div>
+
+		<div style="padding: 2em 0em;">
+			<form method="get" action="/users/profile/edit"><button class="btn btn-info" type="submit">Edit My Profile</button></form>
+		</div>
+
+		<div style="padding: 2em 0em;">
+			<form method="get" action="http://gph.to/1vxlvev"><button class="btn btn-warning" type="submit">Get Crazy</button></form>
+		</div>
+  
+  </div> <!-- ./row -->
+</div> <!-- ./container -->
+
