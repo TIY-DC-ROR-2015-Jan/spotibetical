@@ -44,28 +44,13 @@ class Spotibetical < Sinatra::Base
   end
 
   get '/display' do
-    Song.create! artist: 'abc', title: '123', spotify_link: 'google.com', user_id: 1
-    Song.create! artist: 'jbc', title: '123', spotify_link: 'google.com', user_id: 2
-    Song.create! artist: 'lbc', title: '123', spotify_link: 'google.com', user_id: 3
-    Song.create! artist: 'tbc', title: '123', spotify_link: 'google.com', user_id: 4
-    Song.create! artist: 'cbc', title: '123', spotify_link: 'google.com', user_id: 5
-    Song.create! artist: 'bbc', title: '123', spotify_link: 'google.com', user_id: 6
-
-    @songs = Song.all
-    erb :display
-  end
-
-  get '/display/sort' do
   
     @songs = []
-    if params["alpha"] == true.to_s
-      song_list = Song.all
-      s = Song.get_artist_letter song_list
-      t = s.sort_by{|k,v| k}
-      t.each {|a| @songs << a[1]}
-    end
-    if params["recent"] == true.to_s
-      @songs = Song.order(created_at: :desc)
+    case  
+    when params["sort"] == "alpha"
+      @songs = Song.artist_order(params["limit"])
+    else #set recent to default (same as 'when == "recent"')
+      @songs = Song.most_recent(params["limit"]) #for testing, making this "song_id", but could also be created_at
     end
     @songs
     erb :display

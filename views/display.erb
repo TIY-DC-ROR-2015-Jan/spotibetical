@@ -1,10 +1,10 @@
 <h1>Suggested Songs</h1>
-<form style='float: left; padding: 5px;' action="/display/sort" method="GET">
-	<input name="alpha" value="true" type="hidden">
+<form style='float: left; padding: 5px;' action="/display" method="GET">
+	<input name="sort" value="alpha" type="hidden">
 	<button class="btn btn-sm btn-primary">Sort by artist name</button>
 </form>
-<form style='float: left; padding: 5px;' action="/display/sort" method="GET">
-	<input name="recent" value="true" type="hidden">
+<form style='float: left; padding: 5px;' action="/display" method="GET">
+	<input type="hidden">
 	<button class="btn btn-sm btn-success">Sort by date suggested</button>
 </form>
 <table class="table table-striped table-bordered table-hover">
