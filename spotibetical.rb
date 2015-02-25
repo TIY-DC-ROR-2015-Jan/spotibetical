@@ -56,8 +56,8 @@ end
       session[:user_id] = user.id
       if session["return_trip"]
         path = session["return_trip"]
-        redirect to(path)
         session.delete("return_trip")
+        redirect to(path)
       else
         redirect to('/')
       end
@@ -69,7 +69,6 @@ end
   end
 
   delete '/users/logout' do
-    binding.pry
     session.delete :user_id
     redirect to('/')
   end
