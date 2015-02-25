@@ -22,7 +22,6 @@ class Spotibetical < Sinatra::Base
   end
 
   post '/users/login' do
-    binding.pry
     user = User.where(
       email:    params[:email],
       password: params[:password]
@@ -31,6 +30,7 @@ class Spotibetical < Sinatra::Base
     if user
       session[:user_id] = user.id
       redirect to('/')
+      # This should probably be connected to the suggested songs display table
     else
       @error = true
       erb :login
@@ -48,20 +48,15 @@ class Spotibetical < Sinatra::Base
 
   post '/add_song' do
     spotify_id = params[:spotify_id]
-    binding.pry
-
+    # The vote group said adding songs uses a vote so we need to check the user has votes left here
     if Song.find_by(spotify_id: spotify_id).nil?
-      binding.pry
-            current_user.addsong spotify_id
-
+      current_user.addsong spotify_id
       erb :add_song
     else
-      binding.pry
       @error = true
       erb :add_song
     end
   end
-  binding.pry
 end
 
 Spotibetical.run!
