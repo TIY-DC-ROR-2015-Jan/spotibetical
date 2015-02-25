@@ -9,12 +9,6 @@ class UserTest < MiniTest::Test
   def app
     Spotibetical
   end
-  def setup
-    User.delete_all
-    Song.delete_all
-
-    # [User, Song].each &:delete_all
-  end
 
   def test_users_can_have_songs
 

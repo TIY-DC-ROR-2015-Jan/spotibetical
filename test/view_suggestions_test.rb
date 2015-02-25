@@ -1,12 +1,6 @@
 require './test/helper'
 
 class ViewSuggestionsTest < MiniTest::Test
-  def setup
-    User.delete_all
-    Song.delete_all
-    # [User, Song].each &:delete_all
-  end
-
   def test_songs_have_artists
     x = Song.create! artist: 'abc', title: '123', spotify_link: 'google.com', user_id: 1, spotify_id: '-'
 

@@ -1,13 +1,6 @@
 require './test/helper'
 
 class PlaylistTest < MiniTest::Test
-  def setup
-    Song.delete_all
-    Vote.delete_all
-    Playlist.delete_all
-    User.delete_all
-  end
-
   def test_it_can_create_from_votes
     # Create some songs
     a1, a2, b1, b2 = %w(a1 a2 b1 b2).map do |name|

@@ -14,7 +14,7 @@ class UserAuthTest < MiniTest::Test
   end
 
   def setup
-    User.delete_all
+    super
     User.create! email: 'brit@kingcons.io', password: 'hunter2', name: 'Brit Butler'
   end
 
