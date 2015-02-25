@@ -23,13 +23,19 @@ class Spotibetical < Sinatra::Base
   end
 
   get '/users/profile' do
-    @u= current_user
-    erb :user_profile
+    if current_user
+      erb :user_profile
+    else
+      redirect to('/users/login')
+    end 
   end
 
   get '/users/profile/edit' do
-    @u= current_user
-    erb :user_profile_edit
+    if current_user
+      erb :user_profile_edit
+    else
+      redirect to('/users/login')
+    end 
   end
 
   patch '/users/profile/edit' do
