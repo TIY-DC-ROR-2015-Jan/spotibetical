@@ -13,14 +13,14 @@ class Spotibetical < Sinatra::Base
     end
   end
 
-['/users/profile', "/users/profile/*", "/add_song"].each do |path|
+["/users/profile", "/users/profile/*", "/add_song"].each do |path|
   before path do
     if current_user.nil?
+      session[:return_trip] = path
       redirect to('/users/login')
     end
   end
 end
-
 
   get '/' do
     erb :home
@@ -54,7 +54,13 @@ end
     
     if user
       session[:user_id] = user.id
-      redirect to('/')
+      if session["return_trip"]
+        path = session["return_trip"]
+        redirect to(path)
+        session.delete("return_trip")
+      else
+        redirect to('/')
+      end
     else
       @error = true
       status 422
@@ -63,6 +69,7 @@ end
   end
 
   delete '/users/logout' do
+    binding.pry
     session.delete :user_id
     redirect to('/')
   end
