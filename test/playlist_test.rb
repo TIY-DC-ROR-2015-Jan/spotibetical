@@ -4,7 +4,7 @@ class PlaylistTest < MiniTest::Test
   def test_it_can_create_from_votes
     # Create some songs
     a1, a2, b1, b2 = %w(a1 a2 b1 b2).map do |name|
-      Song.create! artist: name, spotify_id: name, title: name, user_id: 1
+      create_song! artist: name
     end
 
     u1, u2, u3 = %w(u1 u2 u3).map do |name|
@@ -23,14 +23,14 @@ class PlaylistTest < MiniTest::Test
 
     # Generate playlist
     playlist = Playlist.generate_for_week!
-    
+
     # Make sure that worked
     assert_equal playlist.songs, [a1, b2]
   end
 
   def test_the_pogues
-    a = Song.create! artist: 'The Pogues', title: 'Something long', spotify_id: '-', user_id: 1
-    b = Song.create! artist: 'Punch Brothers', title: 'Rye Whiskey', spotify_id: '--', user_id: 1
+    a = create_song! artist: 'The Pogues', title: 'Something long'
+    b = create_song! artist: 'Punch Brothers', title: 'Rye Whiskey'
     u = User.create! name: 'a', email: 'a@example.com', password: 'password'
     u.vote [a.id, b.id]
 

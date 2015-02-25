@@ -4,7 +4,7 @@ require './spotibetical'
 require 'rack/test'
 
 class SongTest < MiniTest::Test
-  
+
   include Rack::Test::Methods
   def app
     Spotibetical
@@ -16,7 +16,7 @@ class SongTest < MiniTest::Test
   end
 
   def test_songs_have_spotify_id
-    s = Song.create! artist: 'The Pogues', title: 'If I Should Fall From Grace With God', user_id: 1, spotify_id: "1Z5rTFsClLFgsIGuZ7Ymt2"
+    s = create_song! artist: 'The Pogues', title: 'If I Should Fall From Grace With God', spotify_id: "1Z5rTFsClLFgsIGuZ7Ymt2"
     assert_equal s.spotify_id, "1Z5rTFsClLFgsIGuZ7Ymt2"
   end
 
