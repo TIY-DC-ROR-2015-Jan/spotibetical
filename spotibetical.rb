@@ -82,13 +82,6 @@ class Spotibetical < Sinatra::Base
     erb :display
   end
 
-  # get '/display/preview' do
-  #   s = Spotify.find_song params['spotify_id']
-  #   redirect to(s["preview_link"])
-
-  # end
-
-
   get '/add_song' do
     erb :add_song
   end
