@@ -48,14 +48,15 @@ class Spotibetical < Sinatra::Base
     @songs = []
     case  
     when params["sort"] == "alpha"
-      @songs = Song.artist_order(params["limit"])
+      @songs = Song.artist_order#(params["limit"])
     else #set recent to default (same as 'when == "recent"')
-      @songs = Song.most_recent(params["limit"]) #for testing, making this "song_id", but could also be created_at
+      @songs = Song.most_recent#(params["limit"]) #for testing, making this "song_id", but could also be created_at
     end
+    #Limit params eventually passed in via forms, but commented out b/c not entirely implemented
     @songs
     erb :display
   end
 
 end
 
-Spotibetical.run!
+Spotibetical.run! if $PROGRAM_NAME == __FILE__

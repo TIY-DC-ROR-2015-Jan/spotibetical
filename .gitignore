@@ -1,3 +1,6 @@
+.gitignore
 .DS_Store
 coverage
 db/*.sqlite3
+smallest-actionable_view.txt
+spotibetical_outline.rb
