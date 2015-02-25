@@ -41,30 +41,13 @@ class Spotibetical < Sinatra::Base
   patch '/users/profile/edit' do
     if current_user
       u = current_user
-      if params["avatar_url"] !=""
-        u.avatar_url=params["avatar_url"]
-        u.save!
-      end 
-      if params["bio"] !=""
-        u.bio=params["bio"]
-        u.save!
-      end
-      if params["home_state"] !=""
-        u.home_state=params["home_state"]
-        u.save!
-      end
-      if params["zodiac_sign"] !=""
-        u.zodiac_sign=params["zodiac_sign"]
-        u.save!
-      end
-      if params["favorite_song_url"] !=""
-        u.favorite_song_url=params["favorite_song_url"]
-        u.save!
-      end
+      present_params = params.select { |k,v| v != "" }
+      present_params.delete "_method"
+      u.update present_params if present_params.any?
+      redirect to('/users/profile')
     else
       redirect to('/users/login')
     end
-    redirect to('/users/profile')
   end
 
   post '/users/login' do
