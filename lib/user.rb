@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   # ... others?
 
   def addsong spotify_id
-    song = Spot.find_song spotify_id
+    song = Spotify.find_song spotify_id
     artist = song["artists"][0]["name"]
     track = song["name"]
     # User spends vote here
