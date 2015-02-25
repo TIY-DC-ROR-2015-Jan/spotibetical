@@ -1,5 +1,6 @@
 require "pry"
 require_relative "db/setup"
+require "rake/testtask"
 
 class String
   def snake_case
@@ -10,6 +11,12 @@ class String
       downcase
   end
 end
+
+# `rake test` or just `rake` should run all tests in the test folder
+Rake::TestTask.new do |t|
+  t.pattern = "test/*_test.rb"
+end
+task default: [:test]
 
 desc "Run migrations"
 namespace :db do

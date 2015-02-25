@@ -1,0 +1,6 @@
+language: ruby
+rvm:
+  - 2.2.0
+script:
+  - TEST=true bundle exec rake db:migrate
+  - bundle exec rake test

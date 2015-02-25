@@ -4,29 +4,26 @@ require './spotibetical'
 require 'rack/test'
 
 class SongTest < MiniTest::Test
-  
+
   include Rack::Test::Methods
   def app
     Spotibetical
   end
 
   def setup
-    User.delete_all
+    super
     User.create! email: 'brit@kingcons.io', password: 'hunter2', name: 'Brit Butler'
-    Song.delete_all
   end
 
   def test_songs_have_spotify_id
-    s = Song.create! artist: 'The Pogues', title: 'If I Should Fall From Grace With God', user_id: 1, spotify_id: "1Z5rTFsClLFgsIGuZ7Ymt2"
+    s = create_song! artist: 'The Pogues', title: 'If I Should Fall From Grace With God', spotify_id: "1Z5rTFsClLFgsIGuZ7Ymt2"
     assert_equal s.spotify_id, "1Z5rTFsClLFgsIGuZ7Ymt2"
-    Song.delete_all
   end
 
   def test_addsong_adds_song
     u = User.first
     u.addsong "1kNaeeLr7uxdmER8XDS928"
     assert_equal Song.first.title, "Cairo"
-    Song.delete_all
   end
 
   def test_user_can_add_songs
@@ -49,7 +46,6 @@ class SongTest < MiniTest::Test
       song_ids << x.spotify_id
     end
     assert_equal song_ids.uniq!, nil
-
   end
 
 end
