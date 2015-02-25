@@ -13,6 +13,15 @@ class Spotibetical < Sinatra::Base
     end
   end
 
+['/users/profile', "/users/profile/*", "/add_song"].each do |path|
+    before path do
+      if current_user.nil?
+        redirect to('/users/login')
+      end
+    end
+end
+
+
   get '/' do
     erb :home
   end
@@ -22,31 +31,31 @@ class Spotibetical < Sinatra::Base
   end
 
   get '/users/profile' do
-    if current_user
+    #if current_user
       erb :user_profile
-    else
-      redirect to('/users/login')
-    end 
+    #else
+    #  redirect to('/users/login')
+    #end 
   end
 
   get '/users/profile/edit' do
-    if current_user
+    #if current_user
       erb :user_profile_edit
-    else
-      redirect to('/users/login')
-    end 
+    #else
+    #  redirect to('/users/login')
+    #end 
   end
 
   patch '/users/profile/edit' do
-    if current_user
+    #if current_user
       u = current_user
       present_params = params.select { |k,v| v != "" }
       present_params.delete "_method"
       u.update present_params if present_params.any?
       redirect to('/users/profile')
-    else
-      redirect to('/users/login')
-    end
+    #else
+    #  redirect to('/users/login')
+    #end
   end
 
   post '/users/login' do
@@ -72,7 +81,6 @@ class Spotibetical < Sinatra::Base
   end
 
   get '/display' do
-  
     @songs = []
     case  
     when params["sort"] == "alpha"
