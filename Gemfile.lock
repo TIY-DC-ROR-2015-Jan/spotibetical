@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:sinatra/sinatra.git
+  remote: https://github.com/sinatra/sinatra.git
   revision: be9c18ac44214069f4709ced6da65abba9501d24
   specs:
     sinatra (1.4.5)
@@ -43,6 +43,7 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
+    rake (10.4.2)
     slop (3.6.0)
     sqlite3 (1.3.10)
     thread_safe (0.3.4)
@@ -59,5 +60,6 @@ DEPENDENCIES
   minitest
   pry
   rack-test
+  rake
   sinatra!
   sqlite3

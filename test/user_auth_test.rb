@@ -14,7 +14,7 @@ class UserAuthTest < MiniTest::Test
   end
 
   def setup
-    User.delete_all
+    super
     User.create! email: 'brit@kingcons.io', password: 'hunter2', name: 'Brit Butler'
   end
 
@@ -32,7 +32,7 @@ class UserAuthTest < MiniTest::Test
     get '/'
     assert_equal last_response.status, 200
     refute last_response.body.include? "Login"
-    assert last_response.body.include? "Log out"
+    assert last_response.body.include? "Logout"
   end
 
   def test_login_for_redisplays_on_error
