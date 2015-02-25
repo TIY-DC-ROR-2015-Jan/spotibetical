@@ -8,6 +8,7 @@ class UserTest < MiniTest::Test
   end
 
   def test_users_can_have_songs
+
     u = User.create! name: 'Brit Butler', email: 'brit@kingcons.io', password: 'password'
     s = Song.create! artist: 'The Faint', title: 'Dress Code', user_id: 1
     u.songs.push s
@@ -16,4 +17,6 @@ class UserTest < MiniTest::Test
     loaded_user = User.find u.id
     assert_equal loaded_user.songs.first.title, "Dress Code"
   end
+
+
 end
