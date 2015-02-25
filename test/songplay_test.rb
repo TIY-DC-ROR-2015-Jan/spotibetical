@@ -28,6 +28,4 @@ class SongTest < MiniTest::Test
     s = Song.first
     assert_equal s.play_link, "https://open.spotify.com/track/7IoK6jZBxY7NMoQPoPXZCF"
   end
-
-
 end
