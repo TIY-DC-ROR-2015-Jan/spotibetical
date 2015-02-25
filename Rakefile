@@ -1,5 +1,6 @@
 require "pry"
 require_relative "db/setup"
+require "rake/testtask"
 
 class String
   def snake_case
@@ -9,6 +10,10 @@ class String
       tr("-", "_").
       downcase
   end
+end
+
+Rake::TestTask.new do |t|
+  t.pattern = "test/*_test.rb"
 end
 
 desc "Run migrations"
