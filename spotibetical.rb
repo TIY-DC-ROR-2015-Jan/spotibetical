@@ -23,7 +23,6 @@ class Spotibetical < Sinatra::Base
   end
 
   post '/users/login' do
-    u = User.create! name: 'Brit Butler', email: 'brit@kingcons.io', password: 'password'
     user = User.where(
       email:    params[:email],
       password: params[:password]
