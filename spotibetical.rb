@@ -35,23 +35,23 @@ class Spotibetical < Sinatra::Base
   patch '/users/profile/edit' do
     if current_user
       u = current_user
-      if params["avatar_url"]
+      if params["avatar_url"] !=""
         u.avatar_url=params["avatar_url"]
         u.save!
       end 
-      if params["bio"]
+      if params["bio"] !=""
         u.bio=params["bio"]
         u.save!
       end
-      if params["home_state"]
+      if params["home_state"] !=""
         u.home_state=params["home_state"]
         u.save!
       end
-      if params["zodiac_sign"]
+      if params["zodiac_sign"] !=""
         u.zodiac_sign=params["zodiac_sign"]
         u.save!
       end
-      if params["favorite_song_url"]
+      if params["favorite_song_url"] !=""
         u.favorite_song_url=params["favorite_song_url"]
         u.save!
       end
