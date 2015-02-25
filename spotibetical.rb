@@ -13,6 +13,15 @@ class Spotibetical < Sinatra::Base
     end
   end
 
+['/users/profile', "/users/profile/*", "/add_song"].each do |path|
+  before path do
+    if current_user.nil?
+      redirect to('/users/login')
+    end
+  end
+end
+
+
   get '/' do
     erb :home
   end
@@ -22,31 +31,19 @@ class Spotibetical < Sinatra::Base
   end
 
   get '/users/profile' do
-    if current_user
-      erb :user_profile
-    else
-      redirect to('/users/login')
-    end 
+    erb :user_profile
   end
 
   get '/users/profile/edit' do
-    if current_user
-      erb :user_profile_edit
-    else
-      redirect to('/users/login')
-    end 
+    erb :user_profile_edit
   end
 
   patch '/users/profile/edit' do
-    if current_user
-      u = current_user
-      present_params = params.select { |k,v| v != "" }
-      present_params.delete "_method"
-      u.update present_params if present_params.any?
-      redirect to('/users/profile')
-    else
-      redirect to('/users/login')
-    end
+    u = current_user
+    present_params = params.select { |k,v| v != "" }
+    present_params.delete "_method"
+    u.update present_params if present_params.any?
+    redirect to('/users/profile')
   end
 
   post '/users/login' do
@@ -58,7 +55,6 @@ class Spotibetical < Sinatra::Base
     if user
       session[:user_id] = user.id
       redirect to('/')
-      # This should probably be connected to the suggested songs display table
     else
       @error = true
       status 422
@@ -72,7 +68,6 @@ class Spotibetical < Sinatra::Base
   end
 
   get '/display' do
-  
     @songs = []
     case  
     when params["sort"] == "alpha"
@@ -94,7 +89,6 @@ class Spotibetical < Sinatra::Base
     # The vote group said adding songs uses a vote so we need to check the user has votes left here
     if Song.find_by(spotify_id: spotify_id).nil?
       current_user.addsong spotify_id
-      #erb :add_song
       redirect to('/add_song')
     else
       @error = "Somebody already suggested that. Be original."
