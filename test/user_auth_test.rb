@@ -14,10 +14,8 @@ class UserAuthTest < MiniTest::Test
   end
 
   def setup
-    User.delete_all
-    Song.delete_all
+    super
     User.create! email: 'brit@kingcons.io', password: 'hunter2', name: 'Brit Butler'
-    Song.create! artist: "Random Artist", title: "Random Song", user_id: 1, spotify_id: "random junk"
   end
 
   def test_users_can_login

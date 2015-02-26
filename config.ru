@@ -1,0 +1,2 @@
+require './spotibetical'
+run Spotibetical

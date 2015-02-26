@@ -1,11 +1,23 @@
 source 'https://rubygems.org'
 
-gem 'activerecord'
-gem 'sinatra', git: 'git@github.com:sinatra/sinatra.git'
-gem 'httparty'
-gem 'sqlite3'
+ruby '2.2.0'
 
-gem 'pry'
+gem 'activerecord'
+gem 'sinatra', git: 'https://github.com/sinatra/sinatra.git'
+gem 'httparty'
+gem 'dotenv'
+gem 'madison'
+
+gem 'rake'
+
+group :development do
+  gem 'pry'
+  gem 'sqlite3'
+end
 
 gem 'minitest'
 gem 'rack-test'
+
+group :production do
+  gem 'pg'
+end
