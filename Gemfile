@@ -4,7 +4,7 @@ gem 'activerecord'
 gem 'sinatra', git: 'https://github.com/sinatra/sinatra.git'
 gem 'httparty'
 gem 'sqlite3'
-gem 'mandrill'
+gem 'mandrill-api'
 
 gem 'rake'
 gem 'pry'

@@ -8,7 +8,7 @@ require 'mandrill'
 
 class Spotibetical < Sinatra::Base
 
-  MANDRILL_APIKEY = File.read("test/mandrill_testapikey.txt")
+  mdapikey = File.read('./mandrill_testapikey.txt') #UPDATE LN 150 with email and add API key before create user.
 
   enable :sessions, :method_override
   set :session_secret, 'super secret'
@@ -139,20 +139,20 @@ class Spotibetical < Sinatra::Base
 
   post '/create_account' do
     ensure_admin!
-    if User.create!(name: params["name"], email: params["email"], password: params["password"])
-      x = User.last
-      m = Mandrill::API.new(MANDRILL_APIKEY)
+    begin
+    x = User.create!(name: params["name"], email: params["email"], password: params["password"])
+      m = Mandrill::API.new(mdapikey)
       m.messages.send({
         :subject => "Hello from Spotibetical",
         :from_name => "Spotibetical Team",
         :text => "Hi! You should play our game. Your username is #{x.name}. Your current password is #{x.password}. Log in and change it because security. Enjoy the tunes!",
         :to => [{:email=> "#{x.email}", :name => "#{x.name}"}],
-        :from_email=>"FILL IN"
+        :from_email=>"CHANGE THIS" #UPDATE THIS EMAIL BEFORE USE
         })
 
       session[:success_message] = "User account for #{x.name} created successfully. Account ID is #{x.id}. Invite email sent to #{x.email}."
-      redirect get '/create_account'
-    else
+      redirect '/create_account'
+    rescue
       session[:error_message] = "User creation failed. Please try again."
       redirect '/create_account'
     end
