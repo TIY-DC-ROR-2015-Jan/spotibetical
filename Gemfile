@@ -14,12 +14,16 @@ gem 'mandrill-api'
 gem 'rake'
 gem 'pry'
 
-group :development do
+group :development, :test do
   gem 'sqlite3'
 end
 
-gem 'minitest'
-gem 'rack-test'
+group :test do
+  gem 'coveralls', require: false
+  gem 'minitest'
+  gem 'rack-test'
+  gem 'simplecov', require: false
+end
 
 group :production do
   gem 'pg'

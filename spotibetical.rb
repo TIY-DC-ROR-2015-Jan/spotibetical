@@ -11,7 +11,6 @@ require './lib/all'
 if ENV['ROLLBAR_ACCESS_TOKEN']
   Rollbar.configure do |config|
     config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
-    config.person_method = "current_user"
   end
 end
 
