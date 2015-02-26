@@ -37,25 +37,17 @@ end
   end
 
   get '/users/profile/edit' do
-    if current_user
       @states = Madison.states
       @zodiac_signs = %w( Aries Taurus Gemini Cancer Leo Virgo Libra Scorpio Sagittarius Capricorn Aquarius Pisces)
       erb :user_profile_edit
-    else
-      redirect to('/users/login')
-    end 
   end
 
   patch '/users/profile/edit' do
-    if current_user
       u = current_user
       present_params = params.select { |k,v| v != current_user[k] }
       present_params.delete "_method"
       u.update present_params if present_params.any?
       redirect to('/users/profile')
-    else
-      redirect to('/users/login')
-    end
   end
 
   post '/users/login' do
@@ -109,7 +101,6 @@ end
       current_user.addsong spotify_id
       redirect to('/add_song')
     else
-      #@error = "Somebody already suggested that. Be original."
       session[:error_message] = "Somebody already suggested that. Be original."
       erb :add_song
     end
