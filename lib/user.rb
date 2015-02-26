@@ -42,4 +42,14 @@ class User < ActiveRecord::Base
       self.save!
     end
   end
+
+  def welcome_email
+    {
+        :subject => "Hello from Spotibetical",
+        :from_name => "Spotibetical Team",
+        :text => "Hi! You should play our game. Your username is #{name}. Your current password is #{password}. Log in and change it because security. Enjoy the tunes!",
+        :to => [{:email=> "#{email}", :name => "#{name}"}],
+        :from_email=>"CHANGE@THIS.com" #UPDATE THIS EMAIL BEFORE USE
+        }
+  end
 end

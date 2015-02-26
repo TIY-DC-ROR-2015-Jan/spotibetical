@@ -2,3 +2,8 @@
 coverage
 db/*.sqlite3
 .env
+old/
+smallest-actionable_view.txt
+spotibetical_outline.rb
+mandrill_testapikey.txt
+
