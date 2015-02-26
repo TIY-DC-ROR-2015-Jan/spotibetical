@@ -1,9 +1,17 @@
 require 'sinatra/base'
 require 'madison'
 require 'pry'
+require 'rollbar'
 
 require './db/setup'
 require './lib/all'
+
+if ENV['ROLLBAR_ACCESS_TOKEN']
+  Rollbar.configure do |config|
+    config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
+  end
+end
+
 class Spotibetical < Sinatra::Base
   enable :sessions, :method_override
   set :session_secret, 'super secret'

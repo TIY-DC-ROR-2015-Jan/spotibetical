@@ -20,4 +20,5 @@ gem 'rack-test'
 
 group :production do
   gem 'pg'
+  gem 'rollbar'
 end
