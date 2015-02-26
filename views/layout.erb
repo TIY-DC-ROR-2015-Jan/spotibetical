@@ -36,9 +36,17 @@
           <button class="btn btn-primary">Login</button>
         </form>
       </div>
-      <% end %>   
+      <% end %>
     </div>  
   </div>
+  
+  <% if session["error_message"] %>
+    <div>
+      <div class="alert alert-danger" role="alert"><%= session["error_message"] %></div>
+      <% session.delete("error_message") %>
+    </div>
+  <% end %> 
+    
 
   <%= yield %>
 

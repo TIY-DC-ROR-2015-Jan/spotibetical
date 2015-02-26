@@ -16,6 +16,7 @@ class Spotibetical < Sinatra::Base
 ["/users/profile", "/users/profile/*", "/add_song"].each do |path|
   before path do
     if current_user.nil?
+      session[:error_message] = "You must log in to see this feature."
       session[:return_trip] = path
       redirect to('/users/login')
     end
@@ -97,7 +98,8 @@ end
       current_user.addsong spotify_id
       redirect to('/add_song')
     else
-      @error = "Somebody already suggested that. Be original."
+      #@error = "Somebody already suggested that. Be original."
+      session[:error_message] = "Somebody already suggested that. Be original."
       erb :add_song
     end
   end
