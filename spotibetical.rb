@@ -19,7 +19,7 @@ class Spotibetical < Sinatra::Base
 
   enable :sessions, :method_override
   set :session_secret, Digest::SHA1.hexdigest(Time.now.to_s)
-  
+
   error do
     Rollbar.error env['sinatra.error']
   end
@@ -89,8 +89,8 @@ class Spotibetical < Sinatra::Base
     user = User.where(
       email:    params[:email],
       password: Digest::SHA1.hexdigest(params[:password])
-    ).first  
-    
+    ).first
+
     if user
       session[:user_id] = user.id
       if session["return_trip"]
