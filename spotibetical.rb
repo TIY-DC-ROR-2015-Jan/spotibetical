@@ -8,8 +8,6 @@ require 'mandrill'
 
 class Spotibetical < Sinatra::Base
 
-  mdapikey = File.read('./mandrill_testapikey.txt') #UPDATE LN 150 with email and add API key before create user.
-
   enable :sessions, :method_override
   set :session_secret, 'super secret'
 
@@ -25,6 +23,11 @@ class Spotibetical < Sinatra::Base
       redirect '/'
     end
   end
+
+  def ci?
+    ENV["CI"] == "true"
+  end
+
 
   get '/' do
     erb :home
@@ -140,9 +143,11 @@ class Spotibetical < Sinatra::Base
   post '/create_account' do
     ensure_admin!
     begin
-    x = User.create!(name: params["name"], email: params["email"], password: params["password"])
-      m = Mandrill::API.new(mdapikey)
-      m.messages.send(x.welcome_email)
+      x = User.create!(name: params["name"], email: params["email"], password: params["password"])
+      unless ci?
+        m = Mandrill::API.new(ENV.fetch "MANDRILL_APIKEY")
+        m.messages.send(x.welcome_email)
+      end
       session[:success_message] = "User account for #{x.name} created successfully. Account ID is #{x.id}. Invite email sent to #{x.email}."
     rescue
       session[:error_message] = "User creation failed. Please try again."
