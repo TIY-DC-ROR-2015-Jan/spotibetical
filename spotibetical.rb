@@ -43,7 +43,7 @@ class Spotibetical < Sinatra::Base
   patch '/users/profile/edit' do
     if current_user
       u = current_user
-      present_params = params.select { |k,v| v != "" }
+      present_params = params.select { |k,v| v != current_user[k] }
       present_params.delete "_method"
       u.update present_params if present_params.any?
       redirect to('/users/profile')
