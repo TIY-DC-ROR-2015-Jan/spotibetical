@@ -142,18 +142,11 @@ class Spotibetical < Sinatra::Base
     begin
     x = User.create!(name: params["name"], email: params["email"], password: params["password"])
       m = Mandrill::API.new(mdapikey)
-      m.messages.send({
-        :subject => "Hello from Spotibetical",
-        :from_name => "Spotibetical Team",
-        :text => "Hi! You should play our game. Your username is #{x.name}. Your current password is #{x.password}. Log in and change it because security. Enjoy the tunes!",
-        :to => [{:email=> "#{x.email}", :name => "#{x.name}"}],
-        :from_email=>"CHANGE THIS" #UPDATE THIS EMAIL BEFORE USE
-        })
-
+      m.messages.send(x.welcome_email)
       session[:success_message] = "User account for #{x.name} created successfully. Account ID is #{x.id}. Invite email sent to #{x.email}."
-      redirect '/create_account'
     rescue
       session[:error_message] = "User creation failed. Please try again."
+    ensure
       redirect '/create_account'
     end
   end
