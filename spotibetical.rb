@@ -205,6 +205,25 @@ class Spotibetical < Sinatra::Base
     end
   end
 
+  get '/admin' do
+    ensure_admin!
+    erb :admin
+  end
+
+  post '/playlist' do
+    ensure_admin!
+    session[:playlist] = Playlist.generate_for_week! params['name']
+    erb :playlist
+  end
+
+  post '/spotify' do
+    ensure_admin!
+    playlist = session[:playlist]
+    Spotify.create_spotify_playlist playlist
+    song_list = playlist.create_uri_list
+    Spotify.add_tracks_to_spotify playlist.spotify_id, song_list
+    redirect_to(playlist.spotify_link)
+  end
 end
 
 Spotibetical.run! if $PROGRAM_NAME == __FILE__
