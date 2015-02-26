@@ -18,7 +18,7 @@ end
 class Spotibetical < Sinatra::Base
 
   enable :sessions, :method_override
-  set :session_secret, Digest::SHA1.hexdigest(Time.now.to_s)
+  set :session_secret, ENV.fetch('SESSION_SECRET', 'super_secret')
 
   error do
     Rollbar.error env['sinatra.error']
