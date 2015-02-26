@@ -1,25 +1,44 @@
 require 'httparty'
-class  Spot
+class  Spotify
+
+  URI= 'https://api.spotify.com/v1'
+  # @headers = {
+  #   'Authorization' => "Bearer #{Spotify.access_token}",
+  #   'Content-Type'  => 'application/json'
+  # }
 
   def self.find_song spotify_uri
-    HTTParty.get("https://api.spotify.com/v1/tracks/#{spotify_uri}")
+    HTTParty.get("#{URI}/tracks/#{spotify_uri}")
   end
 
-  def self.create_spotify_playlist name
-    HTTParty.post("https://api.spotify.com/v1/users/dcironyard/playlists", 
-      headers: {'Authorization' => "Bearer #{Spot.access_token}",
-      'Content-Type'  => 'application/json'},
-      body:    {'name'   => name, 
-        'public' => 'true'})
+  def self.create_spotify_playlist playlist
+    response = HTTParty.post("#{URI}/users/dcironyard/playlists", 
+      headers: {
+        'Authorization' => "Bearer #{Spotify.access_token}",
+        'Content-Type'  => 'application/json'
+        },
+      body:{
+        'name' => playlist.name, 
+        'public' => 'true'
+        }.to_json
+        )
+    playlist.update(
+      spotify_link: response['external_urls']['spotify'],
+      spotify_id: response['id']
+      )
   end
 
-  def self.add_tracks_to_spotify playlist_name, spotify_uris
-    HTTParty.post("https://api.spotify.com/v1/users/dcironyard/playlists/#{playlist_name}/tracks", 
-      header:{'Authorization' => "Bearer #{Spot.access_token}",
-      'Content-Type'  => 'application/json'},
-      body:  {"uris" => spotify_uris})
+  def self.add_tracks_to_spotify playlist_spotify_id, spotify_uris
+    HTTParty.post("#{URI}/users/dcironyard/playlists/#{playlist_spotify_id}/tracks", 
+      headers: {
+        'Authorization' => "Bearer #{Spotify.access_token}",
+        'Content-Type'  => 'application/json'
+        },
+      body:  {"uris" => spotify_uris
+        }.to_json
+        )
   end
-  
+
   def self.refresh_access_token refresh_token
     response = HTTParty.post("https://accounts.spotify.com/api/token", {
       body: {
