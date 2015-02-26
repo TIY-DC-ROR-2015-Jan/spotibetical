@@ -18,5 +18,23 @@ class  Spot
                   header:{'Authorization' => "Bearer #{Spot.access_token}",
                           'Content-Type'  => 'application/json'},
                   body:  {"uris" => spotify_uris})
+
+  def self.refresh_access_token refresh_token
+    response = HTTParty.post("https://accounts.spotify.com/api/token", {
+      body: {
+        grant_type:    "refresh_token",
+        refresh_token: refresh_token,
+        client_id:     ENV.fetch("SPOTIFY_ID"),
+        client_secret: ENV.fetch("SPOTIFY_SECRET")
+      }
+    })
+    raise "Refresh error: #{response}" unless response.ok?
+    response
+  end
+
+  def self.access_token
+    t = SpotifyAccessToken.last
+    t.refresh! if t.expired?
+    t.access_token
   end
 end

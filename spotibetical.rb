@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'madison'
 require 'pry'
 
 require './db/setup'
@@ -31,6 +32,8 @@ class Spotibetical < Sinatra::Base
 
   get '/users/profile/edit' do
     if current_user
+      @states = Madison.states
+      @zodiac_signs = %w( Aries Taurus Gemini Cancer Leo Virgo Libra Scorpio Sagittarius Capricorn Aquarius Pisces)
       erb :user_profile_edit
     else
       redirect to('/users/login')
@@ -40,7 +43,7 @@ class Spotibetical < Sinatra::Base
   patch '/users/profile/edit' do
     if current_user
       u = current_user
-      present_params = params.select { |k,v| v != "" }
+      present_params = params.select { |k,v| v != current_user[k] }
       present_params.delete "_method"
       u.update present_params if present_params.any?
       redirect to('/users/profile')
