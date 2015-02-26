@@ -212,17 +212,19 @@ class Spotibetical < Sinatra::Base
 
   post '/playlist' do
     ensure_admin!
-    session[:playlist] = Playlist.generate_for_week! params['name']
+    playlist = Playlist.generate_for_week! params['name']
+    session[:playlist_id] = playlist.id
     erb :playlist
   end
 
   post '/spotify' do
     ensure_admin!
-    playlist = session[:playlist]
+    playlist = Playlist.find(session[:playlist_id])
     Spotify.create_spotify_playlist playlist
     song_list = playlist.create_uri_list
     Spotify.add_tracks_to_spotify playlist.spotify_id, song_list
-    redirect_to(playlist.spotify_link)
+    binding.pry
+    redirect playlist.spotify_link
   end
 end
 

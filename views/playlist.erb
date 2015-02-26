@@ -7,7 +7,7 @@
         <th>Votes</th>
       </tr>
     </thead>
-    <% sorted_songs = session[:playlist].songs.group_by { |s| s.sort_letter }  %>
+    <% sorted_songs = Playlist.find(session[:playlist_id]).songs.group_by { |s| s.sort_letter }  %>
     <% sorted_songs.each do |letter, song|  %>
       <tr>
         <td><%= song[0].artist %></td>
