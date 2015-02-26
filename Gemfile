@@ -9,9 +9,9 @@ gem 'dotenv'
 gem 'madison'
 
 gem 'rake'
+gem 'pry'
 
 group :development do
-  gem 'pry'
   gem 'sqlite3'
 end
 
