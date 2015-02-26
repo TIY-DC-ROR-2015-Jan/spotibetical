@@ -35,10 +35,10 @@ class Song < ActiveRecord::Base
     letter.upcase
   end
 
-  def self.not_found? spotify_id
+  def self.found? spotify_id
     song = Spot.find_song spotify_id
-    if song["error"]["status"] = 404
-      true
+    if song["error"]
+      false
     end
   end
 end
