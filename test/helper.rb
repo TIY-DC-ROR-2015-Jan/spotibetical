@@ -1,6 +1,16 @@
 require 'minitest/autorun'
 require 'pry'
 
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start
+end
+
+if ENV['CI']
+  require 'coveralls'
+  Coveralls.wear!
+end
+
 ENV['TEST'] = 'true'
 require './db/setup'
 require './lib/all'
