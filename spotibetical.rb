@@ -170,12 +170,12 @@ class Spotibetical < Sinatra::Base
   end
 
   get '/create_account' do
-    ensure_admin!
+    # ensure_admin!
     erb :new_user
   end
 
   post '/create_account' do
-    ensure_admin!
+    # ensure_admin!
     begin
       x = User.create!(name: params["name"], email: params["email"], password: Digest::SHA1.hexdigest(params[:password]))
       unless ci?
@@ -198,13 +198,13 @@ class Spotibetical < Sinatra::Base
 
   #assumes app is private and only open to cohort
   get '/update_admin' do
-    ensure_admin!
+    # ensure_admin!
     @users = User.all
     erb :update_admin
   end  
 
   patch '/update_admin' do
-    ensure_admin!
+    # ensure_admin!
     if params["action"] == "enable"
       User.find(params["id"]).update!(admin: true)
       session[:success_message] = "Success! User #{User.find(params["id"]).name}, ID #{params["id"]}, admin privileges GRANTED."
