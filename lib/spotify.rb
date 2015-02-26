@@ -1,15 +1,15 @@
 require 'httparty'
 
-class  Spotify
+class Spotify
 
-  URI= 'https://api.spotify.com/v1'
+  URI = 'https://api.spotify.com/v1'
   # @headers = {
   #   'Authorization' => "Bearer #{Spotify.access_token}",
   #   'Content-Type'  => 'application/json'
   # }
 
   def self.find_song spotify_uri
-   song = HTTParty.get("#{URI}/tracks/#{spotify_uri}")
+    song = HTTParty.get("#{URI}/tracks/#{spotify_uri}")
     song_hash = {
       artist: song["artists"][0]["name"],
       track_name: song["name"],
@@ -18,17 +18,18 @@ class  Spotify
     }
   end
 
+
   def self.create_spotify_playlist playlist
     response = HTTParty.post("#{URI}/users/dcironyard/playlists", 
       headers: {
         'Authorization' => "Bearer #{Spotify.access_token}",
         'Content-Type'  => 'application/json'
         },
-      body:{
-        'name' => playlist.name, 
-        'public' => 'true'
-        }.to_json
-        )
+        body:{
+          'name' => playlist.name, 
+          'public' => 'true'
+          }.to_json
+          )
     playlist.update(
       spotify_link: response['external_urls']['spotify'],
       spotify_id: response['id']
@@ -41,9 +42,10 @@ class  Spotify
         'Authorization' => "Bearer #{Spotify.access_token}",
         'Content-Type'  => 'application/json'
         },
-      body:  {"uris" => spotify_uris
-        }.to_json
-        )
+        body:  {"uris" => spotify_uris
+          }.to_json
+          )
+  end
 
   def self.refresh_access_token refresh_token
     response = HTTParty.post("https://accounts.spotify.com/api/token", {
