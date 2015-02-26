@@ -125,12 +125,18 @@ class Spotibetical < Sinatra::Base
     erb :add_song
   end
 
+  post '/theadd/:spotify_id' do 
+    @new_song_id = params[:spotify_id]
+    erb :theadd
+  end
+
+
   post '/add_song' do
     spotify_id = params[:spotify_id]
     # The vote group said adding songs uses a vote so we need to check the user has votes left here
     if Song.find_by(spotify_id: spotify_id).nil?
       current_user.addsong spotify_id
-      redirect to('/add_song')
+      redirect to('/song_added/:spotify_id')
     else
       session[:error_message] = "Somebody already suggested that. Be original."
       erb :add_song
