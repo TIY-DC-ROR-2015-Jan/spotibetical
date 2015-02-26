@@ -3,6 +3,7 @@ require 'madison'
 require 'pry'
 require 'rollbar'
 require 'mandrill'
+require 'digest'
 
 require './db/setup'
 require './lib/all'
@@ -17,7 +18,7 @@ end
 class Spotibetical < Sinatra::Base
 
   enable :sessions, :method_override
-  set :session_secret, 'super secret'
+  set :session_secret, ENV.fetch('SESSION_SECRET', 'super_secret')
 
   error do
     Rollbar.error env['sinatra.error']
@@ -87,9 +88,9 @@ class Spotibetical < Sinatra::Base
   post '/users/login' do
     user = User.where(
       email:    params[:email],
-      password: params[:password]
-    ).first  
-    
+      password: Digest::SHA1.hexdigest(params[:password])
+    ).first
+
     if user
       session[:user_id] = user.id
       if session["return_trip"]
@@ -162,7 +163,7 @@ class Spotibetical < Sinatra::Base
   post '/create_account' do
     ensure_admin!
     begin
-      x = User.create!(name: params["name"], email: params["email"], password: params["password"])
+      x = User.create!(name: params["name"], email: params["email"], password: Digest::SHA1.hexdigest(params[:password]))
       unless ci?
         m = Mandrill::API.new(ENV.fetch "MANDRILL_APIKEY")
         m.messages.send(x.welcome_email)
