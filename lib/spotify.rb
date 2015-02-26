@@ -1,13 +1,19 @@
 require 'httparty'
-class  Spot
 
+class Spotify
   def self.find_song spotify_uri
-    HTTParty.get("https://api.spotify.com/v1/tracks/#{spotify_uri}")
+    song = HTTParty.get("https://api.spotify.com/v1/tracks/#{spotify_uri}")
+    song_hash = {
+      artist: song["artists"][0]["name"],
+      track_name: song["name"],
+      play_link: song["external_urls"]["spotify"],
+      preview_link: song["preview_url"]
+    }
   end
 
   def self.create_spotify_playlist name
     HTTParty.post("https://api.spotify.com/v1/users/dcironyard/playlists", 
-      headers: {'Authorization' => "Bearer #{Spot.access_token}",
+      headers: {'Authorization' => "Bearer #{Spotify.access_token}",
       'Content-Type'  => 'application/json'},
       body:    {'name'   => name, 
         'public' => 'true'})
@@ -15,7 +21,7 @@ class  Spot
 
   def self.add_tracks_to_spotify playlist_name, spotify_uris
     HTTParty.post("https://api.spotify.com/v1/users/dcironyard/playlists/#{playlist_name}/tracks", 
-      header:{'Authorization' => "Bearer #{Spot.access_token}",
+      header:{'Authorization' => "Bearer #{Spotify.access_token}",
       'Content-Type'  => 'application/json'},
       body:  {"uris" => spotify_uris})
   end
