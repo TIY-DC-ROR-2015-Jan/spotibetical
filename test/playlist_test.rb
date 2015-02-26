@@ -22,7 +22,7 @@ class PlaylistTest < MiniTest::Test
     u1.veto! b1.id
 
     # Generate playlist
-    playlist = Playlist.generate_for_week!
+    playlist = Playlist.generate_for_week! "Test"
 
     # Make sure that worked
     assert_equal playlist.songs, [a1, b2]
@@ -34,7 +34,7 @@ class PlaylistTest < MiniTest::Test
     u = User.create! name: 'a', email: 'a@example.com', password: 'password'
     u.vote [a.id, b.id]
 
-    playlist = Playlist.generate_for_week!
+    playlist = Playlist.generate_for_week! "Test2"
     assert_equal playlist.songs.count, 1
   end
 end

@@ -2,8 +2,8 @@ class Playlist < ActiveRecord::Base
   has_many :playlist_songs
   has_many :songs, through: :playlist_songs
 
-  def self.generate_for_week!
-    playlist = Playlist.create!
+  def self.generate_for_week! name
+    playlist = Playlist.create! name: name
 
     # Figure out which songs won, and add them
     # Look at songs not vetoed
@@ -17,6 +17,6 @@ class Playlist < ActiveRecord::Base
   end
 
   def create_uri_list 
-    self.map {|song| 'spotify:track:'+ song.spotify_id}
+    self.songs.map {|song| 'spotify:track:'+ song.spotify_id}
   end
 end
