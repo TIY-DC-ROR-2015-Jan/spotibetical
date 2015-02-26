@@ -1,4 +1,5 @@
 require 'httparty'
+
 class  Spotify
 
   URI= 'https://api.spotify.com/v1'
@@ -8,7 +9,13 @@ class  Spotify
   # }
 
   def self.find_song spotify_uri
-    HTTParty.get("#{URI}/tracks/#{spotify_uri}")
+   song = HTTParty.get("#{URI}/tracks/#{spotify_uri}")
+    song_hash = {
+      artist: song["artists"][0]["name"],
+      track_name: song["name"],
+      play_link: song["external_urls"]["spotify"],
+      preview_link: song["preview_url"]
+    }
   end
 
   def self.create_spotify_playlist playlist
@@ -37,7 +44,6 @@ class  Spotify
       body:  {"uris" => spotify_uris
         }.to_json
         )
-  end
 
   def self.refresh_access_token refresh_token
     response = HTTParty.post("https://accounts.spotify.com/api/token", {

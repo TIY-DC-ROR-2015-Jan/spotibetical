@@ -1,11 +1,14 @@
-<h3> Suggest a song </h3>
-<h4> Please enter the Spotify ID of the song </h4>
-<% if @error %>
-  <div class="alert alert-danger"><%= @error %></div>
-<% end %>
-<div class="well">
-  <form action='/add_song' method="POST">
-    <input name="spotify_id" placeholder="Spotify ID">
-    <button class="btn btn-primary">Submit</button>
-  </form>
-</div>
+<div class="container">
+  <h3> Suggest a song </h3>
+  <h4> Please enter the Spotify ID of the song </h4>
+    <div class="well">
+      <form action='/add_song' method="POST">
+         <% if session[:error_message] %>
+          <input class="col-sm-3" name="spotify_id" placeholder=<%= params[:spotify_id] %>>
+          <% else %>
+        <input class="col-sm-3" name="spotify_id" placeholder="Spotify ID">
+        <% end %>
+        <button class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>

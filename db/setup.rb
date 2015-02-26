@@ -4,14 +4,20 @@ Dotenv.load
 require 'active_record'
 require 'yaml'
 
-db_config = YAML::load(File.open('config/database.yml'))
+if ENV["DATABASE_URL"]
+  # For production / deployment on Heroku
+  ActiveRecord::Base.establish_connection ENV["DATABASE_URL"]
 
-env_config = if ENV["TEST"]
-  db_config["test"]
 else
-  ActiveRecord::Base.logger = ActiveSupport::Logger.new(STDERR)
-  db_config["development"]
-end
+  db_config = YAML::load(File.open('config/database.yml'))
 
-raise "Could not find database config for environment" unless env_config
-ActiveRecord::Base.establish_connection(env_config)
+  env_config = if ENV["TEST"]
+    db_config["test"]
+  else
+    ActiveRecord::Base.logger = ActiveSupport::Logger.new(STDERR)
+    db_config["development"]
+  end
+
+  raise "Could not find database config for environment" unless env_config
+  ActiveRecord::Base.establish_connection(env_config)
+end

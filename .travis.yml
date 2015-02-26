@@ -4,3 +4,5 @@ rvm:
 script:
   - TEST=true bundle exec rake db:migrate
   - bundle exec rake test
+
+env: CI=true
