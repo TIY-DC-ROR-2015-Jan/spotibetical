@@ -31,6 +31,8 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (0.7.0)
     json (1.8.2)
+    madison (0.4.0)
+      json
     method_source (0.8.2)
     minitest (5.5.1)
     multi_xml (0.5.5)
@@ -57,6 +59,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   httparty
+  madison
   minitest
   pry
   rack-test
