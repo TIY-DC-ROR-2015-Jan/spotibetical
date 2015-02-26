@@ -21,8 +21,10 @@ class User < ActiveRecord::Base
     preview_link = song[:preview_link]
     play_link = song[:play_link]
 
-    # User spends vote here
-    Song.create!(title: track, artist: artist, spotify_id: spotify_id, user_id: self.id, preview_link: preview_link, play_link: play_link)
+    song_array = []
+    s = Song.create!(title: track, artist: artist, spotify_id: spotify_id, user_id: self.id, preview_link: preview_link, play_link: play_link)
+    song_array << s
+    vote(song_array)
   end
 
   def vote song_array
