@@ -210,6 +210,11 @@ class Spotibetical < Sinatra::Base
     end
   end
 
+  not_found do
+    status 404
+    erb :nope
+  end
+
 end
 
 Spotibetical.run! if $PROGRAM_NAME == __FILE__

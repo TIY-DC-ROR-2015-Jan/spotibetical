@@ -14,6 +14,8 @@ gem 'mandrill-api'
 gem 'rake'
 gem 'pry'
 
+gem 'rollbar'
+
 group :development, :test do
   gem 'sqlite3'
 end
@@ -27,5 +29,4 @@ end
 
 group :production do
   gem 'pg'
-  gem 'rollbar'
 end
