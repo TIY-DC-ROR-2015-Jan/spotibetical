@@ -3,6 +3,7 @@ require 'madison'
 require 'pry'
 require 'rollbar'
 require 'mandrill'
+require 'digest'
 
 require './db/setup'
 require './lib/all'
@@ -87,7 +88,7 @@ class Spotibetical < Sinatra::Base
   post '/users/login' do
     user = User.where(
       email:    params[:email],
-      password: params[:password]
+      password: Digest::SHA1.hexdigest(params[:password])
     ).first  
     
     if user
@@ -162,7 +163,7 @@ class Spotibetical < Sinatra::Base
   post '/create_account' do
     ensure_admin!
     begin
-      x = User.create!(name: params["name"], email: params["email"], password: params["password"])
+      x = User.create!(name: params["name"], email: params["email"], password: Digest::SHA1.hexdigest(params[:password]))
       unless ci?
         m = Mandrill::API.new(ENV.fetch "MANDRILL_APIKEY")
         m.messages.send(x.welcome_email)
