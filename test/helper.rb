@@ -30,4 +30,12 @@ class MiniTest::Test
     @song_counter += 1
     Song.create! attrs
   end
+
+  def create_user! attrs={}
+    attrs[:email]    ||= 'brit@kingcons.io'
+    attrs[:password] ||= 'hunter2'
+    attrs[:name]     ||= 'Brit Butler'
+    attrs[:password] = Digest::SHA1.hexdigest attrs[:password]
+    User.create! attrs
+  end
 end

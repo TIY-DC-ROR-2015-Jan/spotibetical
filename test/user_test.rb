@@ -11,8 +11,7 @@ class UserTest < MiniTest::Test
   end
 
   def test_users_can_have_songs
-
-    u = User.create! name: 'Brit Butler', email: 'brit@kingcons.io', password: 'password'
+    u = create_user!
     s = create_song! artist: 'The Faint', title: 'Dress Code'
     u.songs.push s
     # playlist.songs.push s
@@ -22,14 +21,14 @@ class UserTest < MiniTest::Test
   end
 
   def test_songs_save_vote_counts
-    u = User.create! name: 'Brit Butler', email: 'brit@kingcons.io', password: 'password'
+    u = create_user!
     s = create_song! artist: 'The Faint', title: 'Dress Code'
     Vote.create!(song_id: s.id, user_id: u.id)
     assert_equal s.votes.count, 1
   end
 
   def test_vote_count_decreases_after_vote
-    u = User.create! name: 'Brit Butler', email: 'brit@kingcons.io', password: 'password'
+    u = create_user!
     s = create_song! artist: 'The Faint', title: 'Dress Code'
     u.votes.create!(song_id: s.id)
     u.vote_count -= 1
@@ -38,7 +37,7 @@ class UserTest < MiniTest::Test
   end
 
   def test_user_cannot_vote_more_than_vote_count
-    u = User.create! name: 'Brit Butler', email: 'brit@kingcons.io', password: 'password'
+    u = create_user!
     s = create_song! artist: 'The Faint', title: 'Dress Code'
     u.vote_count = 1
     u.vote [s.id, s.id]
@@ -46,7 +45,7 @@ class UserTest < MiniTest::Test
   end
 
   def test_vote_handler_works
-    u = User.create! name: 'Brit Butler', email: 'brit@kingcons.io', password: 'password'
+    u = create_user! email: 'brit@kingcons.io', password: 'password'
     s = create_song! artist: 'The Faint', title: 'Dress Code'
     post '/users/login', email: 'brit@kingcons.io', password: 'password'
     patch '/vote', songs: [s.id]
@@ -54,7 +53,7 @@ class UserTest < MiniTest::Test
   end
 
   def test_veto_handler_works
-    u = User.create! name: 'Brit Butler', email: 'brit@kingcons.io', password: 'password'
+    u = create_user! email: 'brit@kingcons.io', password: 'password'
     s = create_song! artist: 'The Faint', title: 'Dress Code'
     post '/users/login', email: 'brit@kingcons.io', password: 'password'
     patch '/veto', song_id: s.id
