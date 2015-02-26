@@ -8,21 +8,27 @@ class Spotibetical < Sinatra::Base
   enable :sessions, :method_override
   set :session_secret, 'super secret'
 
+  LOGIN_REQUIRED_ROUTES = [
+    "/users/profile",
+    "/users/profile/*",
+    "/add_song"
+  ]
+
   def current_user
     if session[:user_id]
       User.find session[:user_id]
     end
   end
 
-["/users/profile", "/users/profile/*", "/add_song"].each do |path|
-  before path do
-    if current_user.nil?
-      session[:error_message] = "You must log in to see this feature."
-      session[:return_trip] = path
-      redirect to('/users/login')
+  LOGIN_REQUIRED_ROUTES.each do |path|
+    before path do
+      if current_user.nil?
+        session[:error_message] = "You must log in to see this feature."
+        session[:return_trip] = path
+        redirect to('/users/login')
+      end
     end
   end
-end
 
   get '/' do
     erb :home
