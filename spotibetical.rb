@@ -58,7 +58,6 @@ class Spotibetical < Sinatra::Base
     if user
       session[:user_id] = user.id
       redirect to('/')
-      # This should probably be connected to the suggested songs display table
     else
       @error = true
       status 422
