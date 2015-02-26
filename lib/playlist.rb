@@ -8,7 +8,7 @@ class Playlist < ActiveRecord::Base
     # Figure out which songs won, and add them
     # Look at songs not vetoed
     by_letter = Song.unvetoed.group_by { |s| s.sort_letter }
-    by_letter.each do |letter, songs|
+    by_letter.sort.each do |letter, songs|
       winner = songs.max_by { |s| s.votes.count }
       playlist.songs.push winner
     end

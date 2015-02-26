@@ -1,0 +1,22 @@
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Artist</th>
+        <th>Song</th>
+        <th>Votes</th>
+      </tr>
+    </thead>
+    <% sorted_songs = session[:playlist].songs.group_by { |s| s.sort_letter }  %>
+    <% sorted_songs.each do |letter, song|  %>
+      <tr>
+        <td><%= song[0].artist %></td>
+        <td><%= song[0].title %></td>
+        <td><%= song[0].votes.count %></td>
+      </tr>
+    <% end %>
+  </table>
+  <form action="/spotify" method="POST" role="form">
+    <button type="submit" class="btn btn-primary">Push Playlist to Spotify!</button>
+  </form>
+</div>
