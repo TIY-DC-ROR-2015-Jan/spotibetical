@@ -15,4 +15,8 @@ class Playlist < ActiveRecord::Base
 
     playlist
   end
+
+  def create_uri_list 
+    self.map {|song| 'spotify:track:'+ song.spotify_id}
+  end
 end
