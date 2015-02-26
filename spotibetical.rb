@@ -2,9 +2,11 @@ require 'sinatra/base'
 require 'madison'
 require 'pry'
 require 'rollbar'
+require 'mandrill'
 
 require './db/setup'
 require './lib/all'
+
 
 if ENV['ROLLBAR_ACCESS_TOKEN']
   Rollbar.configure do |config|
@@ -13,8 +15,13 @@ if ENV['ROLLBAR_ACCESS_TOKEN']
 end
 
 class Spotibetical < Sinatra::Base
+
   enable :sessions, :method_override
   set :session_secret, 'super secret'
+
+  error do
+    Rollbar.error env['sinatra.error']
+  end
 
   LOGIN_REQUIRED_ROUTES = [
     "/users/profile",
@@ -28,6 +35,7 @@ class Spotibetical < Sinatra::Base
     end
   end
 
+
   LOGIN_REQUIRED_ROUTES.each do |path|
     before path do
       if current_user.nil?
@@ -36,6 +44,18 @@ class Spotibetical < Sinatra::Base
         redirect to('/users/login')
       end
     end
+  end
+
+
+  def ensure_admin!
+    unless current_user.admin == true
+      session[:error_message] = "Nope, nothing to see here." #Unhelpful error message is unhelpful.
+      redirect '/'
+    end
+  end
+
+  def ci?
+    ENV["CI"] == "true"
   end
 
   get '/' do
@@ -133,6 +153,57 @@ class Spotibetical < Sinatra::Base
       current_user.veto! params["song_id"]
     end
   end
+
+  get '/create_account' do
+    ensure_admin!
+    erb :new_user
+  end
+
+  post '/create_account' do
+    ensure_admin!
+    begin
+      x = User.create!(name: params["name"], email: params["email"], password: params["password"])
+      unless ci?
+        m = Mandrill::API.new(ENV.fetch "MANDRILL_APIKEY")
+        m.messages.send(x.welcome_email)
+      end
+      session[:success_message] = "User account for #{x.name} created successfully. Account ID is #{x.id}. Invite email sent to #{x.email}."
+    rescue
+      session[:error_message] = "User creation failed. Please try again."
+    ensure
+      redirect '/create_account'
+    end
+  end
+
+  # get '/delete_account' do
+    # ensure_admin!
+    # erb :delete_user
+    # Need to add session scope and usr attribute to active/inactive
+  # end
+
+  #assumes app is private and only open to cohort
+  get '/update_admin' do
+    ensure_admin!
+    @users = User.all
+    erb :update_admin
+  end  
+
+  patch '/update_admin' do
+    ensure_admin!
+    if params["action"] == "enable"
+      User.find(params["id"]).update!(admin: true)
+      session[:success_message] = "Success! User #{User.find(params["id"]).name}, ID #{params["id"]}, admin privileges GRANTED."
+      redirect '/update_admin'
+    elsif params["action"] == "disable"
+      x = User.find(params["id"]).update!(admin: false)
+      session[:success_message] = "Success! User #{User.find(params["id"]).name}, ID #{params["id"]}, admin privileges REVOKED."
+      redirect '/update_admin'
+    else
+      session[:error_message] = "There was an error updating admin privileges for User ID #{params["id"]}. Please try again."
+      redirect '/update_admin'
+    end
+  end
+
 end
 
 Spotibetical.run! if $PROGRAM_NAME == __FILE__

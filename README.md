@@ -1,28 +1,20 @@
-This folder structure should be suitable for starting a project that uses a database:
+# Spotibetical
 
-* Clone the repo
-* `rake generate:migration <Name>` to create a migration
-* `rake db:migrate` to run it
-* Create models
-* ... ?
-* Profit
+[![Build Status](https://travis-ci.org/TIY-DC-ROR-2015-Jan/spotibetical.svg?branch=playlist_push)](https://travis-ci.org/TIY-DC-ROR-2015-Jan/spotibetical)
+[![Coverage Status](https://coveralls.io/repos/TIY-DC-ROR-2015-Jan/spotibetical/badge.svg)](https://coveralls.io/r/TIY-DC-ROR-2015-Jan/spotibetical)
 
-You may need to fiddle around with remotes assuming that you don't want to push to this one (which you probably don't).
+Crowdsourced, democratic Spotify playlist generation for Friday huddles.
 
-## Rundown
+See the live version at [spotibetical.herokuapp.com](http://spotibetical.herokuapp.com) _(you will need to request a login from an org member)_.
+
+## Running Locally
+
+You may need the following local environment variables:
 
 ```
-.
-├── Gemfile             # Details which gems are required by the project
-├── README.md           # This file
-├── Rakefile            # Defines `rake generate:migration` and `db:migrate`
-├── config
-│   └── database.yml    # Defines the database config (e.g. name of file)
-├── console.rb          # `ruby console.rb` starts `pry` with models loaded
-├── db
-│   ├── dev.sqlite3     # Default location of the database file
-│   ├── migrate         # Folder containing generated migrations
-│   └── setup.rb        # `require`ing this file sets up the db connection
-└── lib                 # Your ruby code (models, etc.) should go here
-    └── all.rb          # Require this file to auto-require _all_ `.rb` files in `lib`
+SPOTIFY_ID=...      # To push playlists to Spotify
+SPOTIFY_SECRET=...  # Similarly
+MANDRILL_APIKEY=... # To send emails e.g. on signup
 ```
+
+Please run `get_spotify_token.rb` to generate your initial `SpotifyAccessToken`; it should auto-refresh as needed from there.

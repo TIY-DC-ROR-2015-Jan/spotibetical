@@ -1,0 +1,20 @@
+<div class="container">
+	<h2>Maintain user admin privileges</h2>
+	
+	<table>
+	<% @users.each do |u| %>
+	  <tr>
+	    <td><%= u.name %></td>
+	    <td>
+	    <form method="post" name="updateadmin" id="updateadmin" action="/update_admin">
+      <input type="hidden" name="_method" value="PATCH">
+      <input type="hidden" name="id" value="<%= u.id %>">
+      <input type="hidden" name="action" value="<%= if u.admin; 'disable'; else; 'enable'; end %>">
+      <button name="submit" type="submit" id="submit"><%= if u.admin; 'Disable'; else; 'Enable'; end %></button>
+      </form>
+	    </td>
+	  </tr>
+	<% end %>
+	</table>
+	
+</div>
