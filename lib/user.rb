@@ -6,13 +6,23 @@ class User < ActiveRecord::Base
   validates :name, presence: true
   validates :email, uniqueness: true
   # ... others?
+  after_initialize :defaults
+
+  def defaults
+    self.avatar_url ||= "http://www.medgadget.com/wp-content/uploads/2013/05/Iron-Yard.png"
+    self.favorite_song_url ||= "spotify:track:2b7FqlHc3JrzlYtGEkzq22"
+    self.bio ||= "Member of The IronYard D.C."
+  end
 
   def addsong spotify_id
-    song = Spot.find_song spotify_id
-    artist = song["artists"][0]["name"]
-    track = song["name"]
+    song = Spotify.find_song spotify_id
+    artist = song[:artist]
+    track = song[:track_name]
+    preview_link = song[:preview_link]
+    play_link = song[:play_link]
+
     # User spends vote here
-    Song.create!(title: track, artist: artist, spotify_id: spotify_id, user_id: self.id)
+    Song.create!(title: track, artist: artist, spotify_id: spotify_id, user_id: self.id, preview_link: preview_link, play_link: play_link)
   end
 
   def vote song_array

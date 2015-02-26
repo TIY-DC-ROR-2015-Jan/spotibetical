@@ -1,12 +1,26 @@
 require 'sinatra/base'
 require 'madison'
 require 'pry'
+require 'rollbar'
 
 require './db/setup'
 require './lib/all'
+
+if ENV['ROLLBAR_ACCESS_TOKEN']
+  Rollbar.configure do |config|
+    config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
+  end
+end
+
 class Spotibetical < Sinatra::Base
   enable :sessions, :method_override
   set :session_secret, 'super secret'
+
+  LOGIN_REQUIRED_ROUTES = [
+    "/users/profile",
+    "/users/profile/*",
+    "/add_song"
+  ]
 
   def current_user
     if session[:user_id]
@@ -14,15 +28,15 @@ class Spotibetical < Sinatra::Base
     end
   end
 
-["/users/profile", "/users/profile/*", "/add_song"].each do |path|
-  before path do
-    if current_user.nil?
-      session[:error_message] = "You must log in to see this feature."
-      session[:return_trip] = path
-      redirect to('/users/login')
+  LOGIN_REQUIRED_ROUTES.each do |path|
+    before path do
+      if current_user.nil?
+        session[:error_message] = "You must log in to see this feature."
+        session[:return_trip] = path
+        redirect to('/users/login')
+      end
     end
   end
-end
 
   get '/' do
     erb :home
@@ -78,17 +92,14 @@ end
   end
 
   get '/display' do
-    @songs = []
-    case  
-    when params["sort"] == "alpha"
+    if params["sort"] == "alpha"
       @songs = Song.artist_order(params["limit"])
     else #set recent to default (same as 'when == "recent"')
       @songs = Song.most_recent(params["limit"]) #for testing, making this "song_id", but could also be created_at
     end
-    @songs
+
     erb :display
   end
-
 
   get '/add_song' do
     erb :add_song
