@@ -1,3 +1,66 @@
 <div class="container">
-	<h1>Welcome to Spotibetical</h1>
+  <div class="table-responsive">
+    <table class="table table-condensed table-bordered table-striped table-hover col-sm-12">
+      
+      <thead>     
+        <h1>Current Song Leaderboard   <small>Suggest a song if the row is empty!</small></h1>
+      </thead>
+      <tr>
+        <th>
+         
+        </th>
+        <th>
+          Artist
+        </th>
+        <th>
+          Title
+        </th>
+        <th class="text-center">
+          Preview
+        </th>
+        <th class="text-center">
+          # of Votes
+        </th>
+        <th class="text-center">
+          Submitted by
+        </th>
+        <th class="text-center">
+          Veto
+        </th>
+      </tr>
+      
+      <% ('A'..'Z').to_a.each do |letter| %>
+      <tr>
+        <td class="text-center"><%= letter %></td>
+        <td>
+          <%= @pl[letter].artist if @pl.has_key?(letter) %>
+        </td>
+        <td>
+          <%= @pl[letter].title if @pl.has_key?(letter) %>
+        </td>
+        <td class="text-center">
+          <button><a href='<%= @pl[letter].preview_link if @pl.has_key?(letter) %>'>♬</a></button>
+        </td>
+        <td class="text-center">
+          <%= @pl[letter].votes.count if @pl.has_key?(letter) %>
+        </td>
+        <td class="text-center">
+          <%= @users.find_by(id: @pl[letter].user_id).name.capitalize if @pl.has_key?(letter) %>
+        </td>
+        <td class="text-center">
+          <% if @pl.has_key?(letter) %>   
+          <form action="/veto" method="POST">
+            <input type="hidden" name="_method" value="PATCH">
+            
+            <input type="hidden" name="song_id" value= <%= @pl[letter].id.to_s %>>
+            <button class="btn btn-warning">Veto</button>
+          </form>
+          <% end %>
+        </td>
+      </tr>  
+      <% end %>
+
+    </table>
+  </div>
 </div>
+

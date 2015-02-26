@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   def vote song_array
     if self.vote_count >= song_array.count
       song_array.each do |song|
-        self.votes.create!(song_id: song)
+        self.votes.create!(song_id: song.id)
         self.vote_count -= 1
         self.save!
       end

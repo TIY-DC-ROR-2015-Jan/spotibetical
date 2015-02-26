@@ -60,6 +60,8 @@ class Spotibetical < Sinatra::Base
   end
 
   get '/' do
+    @users = User.all
+    @pl = Playlist.generate_leaderboard 
     erb :home
   end
 
@@ -151,8 +153,9 @@ class Spotibetical < Sinatra::Base
 
   patch '/veto' do
     if current_user
-      current_user.veto! params["song_id"]
+      current_user.veto! params["song_id"].to_i
     end
+    redirect to('/')
   end
 
   get '/create_account' do

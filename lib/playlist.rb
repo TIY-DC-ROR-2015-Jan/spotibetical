@@ -16,6 +16,17 @@ class Playlist < ActiveRecord::Base
     playlist
   end
 
+  def self.generate_leaderboard
+    pl = {}
+    by_letter = Song.unvetoed.group_by { |s| s.sort_letter }
+    by_letter.each do |letter, songs|
+      winner = songs.max_by { |s| s.votes.count }
+      pl[letter] = winner
+    end
+    
+    pl
+  end
+
   def create_uri_list 
     self.songs.map {|song| 'spotify:track:'+ song.spotify_id}
   end
