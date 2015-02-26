@@ -30,6 +30,11 @@ class Spotibetical < Sinatra::Base
     "/add_song"
   ]
 
+  ADMIN_REQUIRED_ROUTES = [
+    "/create_account",
+    "/update_admin"
+  ]
+
   def current_user
     if session[:user_id]
       User.find session[:user_id]
@@ -47,7 +52,16 @@ class Spotibetical < Sinatra::Base
     end
   end
 
-
+  ADMIN_REQUIRED_ROUTES.each do |path|
+    before path do
+      unless current_user.admin 
+        session[:error_message] = "You don't have permission to access this."
+        session[:return_trip] = path
+        redirect to('/display')
+      end
+    end
+  end
+  
   def ensure_admin!
     unless current_user.admin == true
       session[:error_message] = "Nope, nothing to see here." #Unhelpful error message is unhelpful.
