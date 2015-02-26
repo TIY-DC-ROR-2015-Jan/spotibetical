@@ -10,9 +10,8 @@ class Spotify
         play_link: song["external_urls"]["spotify"],
         preview_link: song["preview_url"]
       }
-    else
-      false
     end
+    #nil
   end
 
   def self.create_spotify_playlist name

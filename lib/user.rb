@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
 
   def addsong spotify_id
     song = Spotify.find_song spotify_id 
-      unless song == false
+      if song
         artist = song[:artist]
         track = song[:track_name]
         preview_link = song[:preview_link]

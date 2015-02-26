@@ -38,7 +38,7 @@ class UserAuthTest < MiniTest::Test
   def test_login_for_redisplays_on_error
     post '/users/login', email: 'jamesdabbs@gmail.com', password: 'password'
     assert_equal last_response.status, 422 # This is the 'right' status code for invalid
-    assert last_response.body.include? "Wrong!"
+    assert last_response.body.include? "Invalid"
   end
 
   def test_users_can_logout
