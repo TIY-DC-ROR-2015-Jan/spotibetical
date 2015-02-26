@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'madison'
 require 'pry'
 
 require './db/setup'
@@ -36,15 +37,25 @@ end
   end
 
   get '/users/profile/edit' do
-    erb :user_profile_edit
+    if current_user
+      @states = Madison.states
+      @zodiac_signs = %w( Aries Taurus Gemini Cancer Leo Virgo Libra Scorpio Sagittarius Capricorn Aquarius Pisces)
+      erb :user_profile_edit
+    else
+      redirect to('/users/login')
+    end 
   end
 
   patch '/users/profile/edit' do
-    u = current_user
-    present_params = params.select { |k,v| v != "" }
-    present_params.delete "_method"
-    u.update present_params if present_params.any?
-    redirect to('/users/profile')
+    if current_user
+      u = current_user
+      present_params = params.select { |k,v| v != current_user[k] }
+      present_params.delete "_method"
+      u.update present_params if present_params.any?
+      redirect to('/users/profile')
+    else
+      redirect to('/users/login')
+    end
   end
 
   post '/users/login' do
@@ -101,6 +112,23 @@ end
       #@error = "Somebody already suggested that. Be original."
       session[:error_message] = "Somebody already suggested that. Be original."
       erb :add_song
+    end
+  end
+
+  # this demos what the voting button looks like
+  get '/vote' do
+    erb :voting
+  end
+
+  patch '/vote' do
+    if current_user
+      current_user.vote params["songs"]
+    end
+  end
+
+  patch '/veto' do
+    if current_user
+      current_user.veto! params["song_id"]
     end
   end
 end
