@@ -29,8 +29,13 @@ GEM
     httparty (0.13.3)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
+    httpi (2.3.0)
+      rack
     i18n (0.7.0)
     json (1.8.2)
+    mandrill (0.0.4)
+      httpi
+      json
     method_source (0.8.2)
     minitest (5.5.1)
     multi_xml (0.5.5)
@@ -57,6 +62,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   httparty
+  mandrill
   minitest
   pry
   rack-test

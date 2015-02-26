@@ -3,7 +3,13 @@ require 'pry'
 
 require './db/setup'
 require './lib/all'
+
+require 'mandrill'
+
 class Spotibetical < Sinatra::Base
+
+  MANDRILL_APIKEY = File.read("test/mandrill_testapikey.txt")
+
   enable :sessions, :method_override
   set :session_secret, 'super secret'
 
@@ -14,10 +20,8 @@ class Spotibetical < Sinatra::Base
   end
 
   def ensure_admin!
-    if current_user.admin == true
-      next
-    else
-      "404 Not found."
+    unless current_user.admin == true
+      session[:error_message] = "Nope, nothing to see here." #Unhelpful error message is unhelpful.
       redirect '/'
     end
   end
@@ -133,38 +137,53 @@ class Spotibetical < Sinatra::Base
     erb :new_user
   end
 
-#now admin enter username and email, later pull from github?
   post '/create_account' do
     ensure_admin!
-    if User.create(name: params["name"], email: params["email"], password: params["password"]).save
-      @success = "You have successfully added a new user."
-      redirect '/create_account'
+    if User.create!(name: params["name"], email: params["email"], password: params["password"])
+      x = User.last
+      m = Mandrill::API.new(MANDRILL_APIKEY)
+      m.messages.send({
+        :subject => "Hello from Spotibetical",
+        :from_name => "Spotibetical Team",
+        :text => "Hi! You should play our game. Your username is #{x.name}. Your current password is #{x.password}. Log in and change it because security. Enjoy the tunes!",
+        :to => [{:email=> "#{x.email}", :name => "#{x.name}"}],
+        :from_email=>"m.f.bucell@gmail.com"
+        })
+
+      session[:success_message] = "User account for #{x.name} created successfully. Account ID is #{x.id}. Invite email sent to #{x.email}."
+      redirect get '/create_account'
     else
-      "User creation failed. Please try again."
+      session[:error_message] = "User creation failed. Please try again."
+      redirect '/create_account'
     end
   end
 
   # get '/delete_account' do
     # ensure_admin!
     # erb :delete_user
-    # what does this mean?
+    # Need to add session scope and usr attribute to active/inactive
   # end
 
+  #assumes app is private and only open to cohort
   get '/update_admin' do
     ensure_admin!
     @users = User.all
     erb :update_admin
-  end
+  end  
 
   patch '/update_admin' do
     ensure_admin!
     if params["action"] == "enable"
-      User.find(params["id"]).update(admin: true)
+      User.find(params["id"]).update!(admin: true)
+      session[:success_message] = "Success! User #{User.find(params["id"]).name}, ID #{params["id"]}, admin privileges GRANTED."
       redirect '/update_admin'
     elsif params["action"] == "disable"
-      User.find(params["id"]).update(admin: false)
+      x = User.find(params["id"]).update!(admin: false)
+      session[:success_message] = "Success! User #{User.find(params["id"]).name}, ID #{params["id"]}, admin privileges REVOKED."
+      redirect '/update_admin'
     else
-      return "Something went wrong. Please try again."
+      session[:error_message] = "There was an error updating admin privileges for User ID #{params["id"]}. Please try again."
+      redirect '/update_admin'
     end
   end
 

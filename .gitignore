@@ -1,3 +1,7 @@
 .DS_Store
 coverage
 db/*.sqlite3
+old/
+smallest-actionable_view.txt
+spotibetical_outline.rb
+mandrill_testapikey.txt
