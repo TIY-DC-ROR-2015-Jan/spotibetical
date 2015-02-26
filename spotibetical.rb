@@ -62,12 +62,12 @@ class Spotibetical < Sinatra::Base
     end
   end
   
-  def ensure_admin!
-    unless current_user.admin == true
-      session[:error_message] = "Nope, nothing to see here." #Unhelpful error message is unhelpful.
-      redirect '/'
-    end
-  end
+  # def ensure_admin!
+  #   unless current_user.admin == true
+  #     session[:error_message] = "Nope, nothing to see here." #Unhelpful error message is unhelpful.
+  #     redirect '/'
+  #   end
+  # end
 
   def ci?
     ENV["CI"] == "true"
