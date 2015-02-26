@@ -155,11 +155,12 @@ class Spotibetical < Sinatra::Base
     end
   end
 
-  get '/create_account' do
+  get '/update_admin' do
     ensure_admin!
-    erb :new_user
-  end
-
+    @users = User.all
+    erb :update_admin
+  end  
+  
   post '/create_account' do
     ensure_admin!
     begin
@@ -183,12 +184,6 @@ class Spotibetical < Sinatra::Base
   # end
 
   #assumes app is private and only open to cohort
-  get '/update_admin' do
-    ensure_admin!
-    @users = User.all
-    erb :update_admin
-  end  
-
   patch '/update_admin' do
     ensure_admin!
     if params["action"] == "enable"
