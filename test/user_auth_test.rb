@@ -44,4 +44,19 @@ class UserAuthTest < MiniTest::Test
   def test_users_can_logout
     skip "Left as an exercise for the reader ..."
   end
+
+  def test_before_filter 
+    get '/users/profile'
+    assert last_response.redirect?
+
+    post '/add_song', spotify_id: "also random junk"
+    assert last_response.redirect?
+
+    post '/users/login', email: 'brit@kingcons.io', password: 'hunter2'
+    get '/users/profile'
+    assert_equal last_response.status, 200
+
+    get '/add_song'
+    assert_equal last_response.status, 200
+  end
 end
