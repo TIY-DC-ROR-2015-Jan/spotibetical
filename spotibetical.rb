@@ -109,13 +109,13 @@ class Spotibetical < Sinatra::Base
     spotify_id = params[:spotify_id]
     # The vote group said adding songs uses a vote so we need to check the user has votes left here
     if Song.find_by(spotify_id: spotify_id).nil?
-      if Song.found?(spotify_id)  == false
-        session[:error_message] = "Couldn't find the song on Spotify, please try again."
-        erb :add_song
-      else
-        current_user.addsong spotify_id
-        erb :add_song
-      end
+      q = current_user.addsong spotify_id      
+        unless q == false
+          erb :add_song
+        else
+          session[:error_message] = "Couldn't find the song on Spotify, please try again."
+          erb :add_song
+        end
     else
       session[:error_message] = "Somebody already suggested that. Be original."
       erb :add_song

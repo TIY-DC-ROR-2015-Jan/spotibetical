@@ -15,14 +15,17 @@ class User < ActiveRecord::Base
   end
 
   def addsong spotify_id
-    song = Spotify.find_song spotify_id
-    artist = song[:artist]
-    track = song[:track_name]
-    preview_link = song[:preview_link]
-    play_link = song[:play_link]
-
-    # User spends vote here
-    Song.create!(title: track, artist: artist, spotify_id: spotify_id, user_id: self.id, preview_link: preview_link, play_link: play_link)
+    song = Spotify.find_song spotify_id 
+      unless song == false
+        artist = song[:artist]
+        track = song[:track_name]
+        preview_link = song[:preview_link]
+        play_link = song[:play_link]
+        # User spends vote here
+        Song.create!(title: track, artist: artist, spotify_id: spotify_id, user_id: self.id, preview_link: preview_link, play_link: play_link)
+      else
+        false
+      end
   end
 
   def vote song_array

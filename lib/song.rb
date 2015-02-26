@@ -36,11 +36,4 @@ class Song < ActiveRecord::Base
     end
     letter.upcase
   end
-
-  def self.found? spotify_id
-    song = Spot.find_song spotify_id
-    if song["error"]
-      false
-    end
-  end
 end
