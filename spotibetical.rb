@@ -163,11 +163,12 @@ class Spotibetical < Sinatra::Base
     redirect to('/')
   end
 
-  get '/create_account' do
+  get '/update_admin' do
     ensure_admin!
-    erb :new_user
-  end
-
+    @users = User.all
+    erb :update_admin
+  end  
+  
   post '/create_account' do
     ensure_admin!
     begin
@@ -191,12 +192,6 @@ class Spotibetical < Sinatra::Base
   # end
 
   #assumes app is private and only open to cohort
-  get '/update_admin' do
-    ensure_admin!
-    @users = User.all
-    erb :update_admin
-  end  
-
   patch '/update_admin' do
     ensure_admin!
     if params["action"] == "enable"
@@ -213,6 +208,27 @@ class Spotibetical < Sinatra::Base
     end
   end
 
+  get '/admin' do
+    ensure_admin!
+    erb :admin
+  end
+
+  post '/playlist' do
+    ensure_admin!
+    playlist = Playlist.generate_for_week! params['name']
+    session[:playlist_id] = playlist.id
+    erb :playlist
+  end
+
+  post '/spotify' do
+    ensure_admin!
+    playlist = Playlist.find(session[:playlist_id])
+    Spotify.create_spotify_playlist playlist
+    song_list = playlist.create_uri_list
+    Spotify.add_tracks_to_spotify playlist.spotify_id, song_list
+    binding.pry
+    redirect playlist.spotify_link
+  end
 end
 
 Spotibetical.run! if $PROGRAM_NAME == __FILE__
