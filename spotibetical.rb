@@ -147,7 +147,7 @@ class Spotibetical < Sinatra::Base
         :from_name => "Spotibetical Team",
         :text => "Hi! You should play our game. Your username is #{x.name}. Your current password is #{x.password}. Log in and change it because security. Enjoy the tunes!",
         :to => [{:email=> "#{x.email}", :name => "#{x.name}"}],
-        :from_email=>"m.f.bucell@gmail.com"
+        :from_email=>"FILL IN"
         })
 
       session[:success_message] = "User account for #{x.name} created successfully. Account ID is #{x.id}. Invite email sent to #{x.email}."
