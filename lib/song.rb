@@ -34,4 +34,11 @@ class Song < ActiveRecord::Base
     end
     letter.upcase
   end
+
+  def self.not_found? spotify_id
+    song = Spot.find_song spotify_id
+    if song["error"]["status"] = 404
+      true
+    end
+  end
 end
