@@ -2,16 +2,18 @@
   <div class = 'row'>
     <div class= "well">
       <h2>
-        <p>This Week's Playlist: 
-          <a href="<%=@playlists[0][1]%>"><%=@playlists[0][0]%></a>
+        <p>This Week's Playlist:
+          <a href="<%=@current[1]%>"><%=@current[0]%></a>
         </p>
       </h2>
     </div>
-    <h2>Past Playlists</h2>
-    <ul class="list-group">
-      <% @playlists[2..20].each do |playlist| %>
-      <li class="list-group-item"><a href='<%=playlist[1]%>'><%=playlist[0]%></a>
-        <%end%>
-      </ul>
-    </div>
+    <% if @past_playlists.any? %>
+      <h2>Past Playlists</h2>
+      <ul class="list-group">
+        <% @past_playlists.each do |playlist| %>
+        <li class="list-group-item"><a href='<%=playlist[1]%>'><%=playlist[0]%></a>
+          <%end%>
+        </ul>
+      </div>
+    <% end %>
   </div>

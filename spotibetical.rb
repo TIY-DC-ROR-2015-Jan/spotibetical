@@ -184,6 +184,7 @@ class Spotibetical < Sinatra::Base
 
   post '/create_account' do
     ensure_admin!
+    raise "This doesn't work ... we mail the encrypted passwords"
     begin
       x = User.create!(name: params["name"], email: params["email"], password: Digest::SHA1.hexdigest(params[:password]))
       unless ci?
@@ -239,6 +240,8 @@ class Spotibetical < Sinatra::Base
 
   get '/playlists' do
     @playlists = Spotify.get_playlists
+    @current = @playlists.first
+    @past_playlists = @playlists[2..20]
     erb :playlists
   end
 end
