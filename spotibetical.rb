@@ -160,12 +160,6 @@ class Spotibetical < Sinatra::Base
     @users = User.all
     erb :admin
   end
-
-  # get '/update_admin' do
-  #   ensure_admin!
-  #   @users = User.all
-  #   erb :update_admin
-  # end  
   
   post '/create_account' do
     ensure_admin!
@@ -179,7 +173,7 @@ class Spotibetical < Sinatra::Base
     rescue
       session[:error_message] = "User creation failed. Please try again."
     ensure
-      redirect '/create_account'
+      redirect '/admin'
     end
   end
 
