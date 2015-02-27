@@ -7,7 +7,7 @@
         </p>
       </h2>
     </div>
-    <% if @past_playlists.any? %>
+    <% if @past_playlists && @past_playlists.any? %>
       <h2>Past Playlists</h2>
       <ul class="list-group">
         <% @past_playlists.each do |playlist| %>
