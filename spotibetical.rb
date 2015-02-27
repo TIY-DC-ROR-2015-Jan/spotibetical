@@ -232,8 +232,12 @@ class Spotibetical < Sinatra::Base
     Spotify.create_spotify_playlist playlist
     song_list = playlist.create_uri_list
     Spotify.add_tracks_to_spotify playlist.spotify_id, song_list
-    binding.pry
     redirect playlist.spotify_link
+  end
+
+  get '/playlists' do
+    @playlists = Spotify.get_playlists
+    erb :playlists
   end
 end
 

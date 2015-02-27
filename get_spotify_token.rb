@@ -13,7 +13,7 @@ end
 
 puts <<INSTRUCTIONS
 To obtain a Spotify token, please log in to Spotify in your browser and then
-* visit 'https://accounts.spotify.com/authorize?response_type=code&redirect_uri=http://localhost:3000&scope=playlist-modify-public&client_id=#{id}'
+* visit 'https://accounts.spotify.com/authorize?response_type=code&redirect_uri=http://localhost:3000&scope=playlist-modify-public playlist-read-private&client_id=#{id}'
 * copy the `code` parameter from the response and paste it in now:
 INSTRUCTIONS
 code = gets.chomp
