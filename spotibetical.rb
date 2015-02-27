@@ -22,6 +22,12 @@ class Spotibetical < Sinatra::Base
 
   error do
     Rollbar.error env['sinatra.error']
+    "Whoops"
+  end
+
+  not_found do
+    status 404
+    erb :nope
   end
 
   LOGIN_REQUIRED_ROUTES = [

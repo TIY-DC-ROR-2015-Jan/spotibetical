@@ -15,6 +15,8 @@ gem 'rake'
 gem 'pry'
 gem 'rollbar'
 
+gem 'rollbar'
+
 group :development, :test do
   gem 'sqlite3'
 end
