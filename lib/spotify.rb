@@ -1,6 +1,8 @@
 require 'httparty'
 
 class Spotify
+
+  SPOTIFY_ACCOUNT='dcironyard'
   def self.header access_token
     header = {
       'Authorization' => "Bearer #{access_token}",
@@ -23,7 +25,7 @@ class Spotify
 
 
   def self.create_spotify_playlist playlist
-    response = HTTParty.post("https://api.spotify.com/v1/users/dcironyard/playlists", 
+    response = HTTParty.post("https://api.spotify.com/v1/users/#{SPOTIFY_ACCOUNT}/playlists", 
       headers: Spotify.header(Spotify.access_token),
       body:{'name' => playlist.name}.to_json)
     playlist.update(
@@ -33,7 +35,7 @@ class Spotify
   end
 
   def self.add_tracks_to_spotify playlist_spotify_id, spotify_uris
-    HTTParty.post("https://api.spotify.com/v1/users/dcironyard/playlists/#{playlist_spotify_id}/tracks", 
+    HTTParty.post("https://api.spotify.com/v1/users/#{SPOTIFY_ACCOUNT}/playlists/#{playlist_spotify_id}/tracks", 
       headers: Spotify.header(Spotify.access_token),
       body:  {"uris" => spotify_uris}.to_json
       )
@@ -56,5 +58,18 @@ class Spotify
     t = SpotifyAccessToken.last
     t.refresh! if t.expired?
     t.access_token
+  end
+
+  def self.get_playlists
+    playlist_data = HTTParty.get("https://api.spotify.com/v1/users/#{SPOTIFY_ACCOUNT}/playlists",
+      headers: {
+        'Authorization' => "Bearer #{Spotify.access_token}",
+        "Accept" => "application/json" 
+      })
+    playlists =[]
+    playlist_data["items"].map do |p|
+      playlists.push([p['name'], p['external_urls']['spotify']])
+    end
+    playlists
   end
 end
