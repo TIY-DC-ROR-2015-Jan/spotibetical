@@ -39,7 +39,7 @@
 					<td>
 						<button><a href=<%= song["preview_link"]%>>♬</a></button>
 					</td>
-					<td><% #votes["count"]%></td>
+					<td><%= song.votes.count %></td>
 					<% if current_user %>
 						<td>
 							<div class='checkbox'>

@@ -155,6 +155,7 @@ class Spotibetical < Sinatra::Base
     if current_user
       current_user.vote params["songs"]
     end
+    redirect to('/display')
   end
 
   patch '/veto' do
@@ -173,8 +174,8 @@ class Spotibetical < Sinatra::Base
     ensure_admin!
     @users = User.all
     erb :update_admin
-  end  
-  
+  end
+
   post '/create_account' do
     ensure_admin!
     begin
