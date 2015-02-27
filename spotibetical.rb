@@ -151,11 +151,6 @@ class Spotibetical < Sinatra::Base
     end
   end
 
-  # this demos what the voting button looks like
-  get '/vote' do
-    erb :voting
-  end
-
   patch '/vote' do
     if current_user
       current_user.vote params["songs"]
@@ -164,7 +159,12 @@ class Spotibetical < Sinatra::Base
 
   patch '/veto' do
     if current_user
-      current_user.veto! params["song_id"].to_i
+      current_user.veto! params["song_id"]
+      if current_user.veto_count== 0
+        redirect back
+        session[:error_message]="You already used your veto"
+      else
+      end
     end
     redirect to('/')
   end
