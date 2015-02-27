@@ -27,7 +27,9 @@ class Spotibetical < Sinatra::Base
   LOGIN_REQUIRED_ROUTES = [
     "/users/profile",
     "/users/profile/*",
-    "/add_song"
+    "/add_song",
+    "/create_account",
+    "/update_admin"
   ]
 
   ADMIN_REQUIRED_ROUTES = [
@@ -48,26 +50,18 @@ class Spotibetical < Sinatra::Base
         session[:error_message] = "You must log in to see this feature."
         session[:return_trip] = path
         redirect to('/users/login')
+        return
+      end
+      if ADMIN_REQUIRED_ROUTES.include? |path|
+        unless current_user.admin 
+        session[:error_message] = "You don't have permission to access this."
+        session[:return_trip] = path
+        redirect to('/display')
+        end
       end
     end
   end
 
-  ADMIN_REQUIRED_ROUTES.each do |path|
-    before path do
-      unless current_user.admin 
-        session[:error_message] = "You don't have permission to access this."
-        session[:return_trip] = path
-        redirect to('/display')
-      end
-    end
-  end
-  
-  # def ensure_admin!
-  #   unless current_user.admin == true
-  #     session[:error_message] = "Nope, nothing to see here." #Unhelpful error message is unhelpful.
-  #     redirect '/'
-  #   end
-  # end
 
   def ci?
     ENV["CI"] == "true"
