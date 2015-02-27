@@ -170,11 +170,17 @@ class Spotibetical < Sinatra::Base
     redirect to('/')
   end
 
-  get '/update_admin' do
+   get '/admin' do
     ensure_admin!
     @users = User.all
-    erb :update_admin
+    erb :admin
   end
+
+  # get '/update_admin' do
+  #   ensure_admin!
+  #   @users = User.all
+  #   erb :update_admin
+  # end
 
   post '/create_account' do
     ensure_admin!
@@ -204,20 +210,15 @@ class Spotibetical < Sinatra::Base
     if params["action"] == "enable"
       User.find(params["id"]).update!(admin: true)
       session[:success_message] = "Success! User #{User.find(params["id"]).name}, ID #{params["id"]}, admin privileges GRANTED."
-      redirect '/update_admin'
+      redirect '/admin'
     elsif params["action"] == "disable"
       x = User.find(params["id"]).update!(admin: false)
       session[:success_message] = "Success! User #{User.find(params["id"]).name}, ID #{params["id"]}, admin privileges REVOKED."
-      redirect '/update_admin'
+      redirect '/admin'
     else
       session[:error_message] = "There was an error updating admin privileges for User ID #{params["id"]}. Please try again."
-      redirect '/update_admin'
+      redirect '/admin'
     end
-  end
-
-  get '/admin' do
-    ensure_admin!
-    erb :admin
   end
 
   post '/playlist' do
