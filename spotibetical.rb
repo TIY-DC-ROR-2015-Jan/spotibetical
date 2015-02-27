@@ -110,7 +110,7 @@ class Spotibetical < Sinatra::Base
   end
 
   patch '/vote' do
-    if current_user
+    if current_user   # should refactor 
       current_user.vote params["songs"]
     end
   end
@@ -120,7 +120,6 @@ class Spotibetical < Sinatra::Base
       current_user.veto! params["song_id"]
       if current_user.veto_count== 0
         redirect back
-        session[:error_message]="You already used your veto"
       else
       end
     end
