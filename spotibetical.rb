@@ -27,10 +27,8 @@ class Spotibetical < Sinatra::Base
   LOGIN_REQUIRED_ROUTES = [
     "/users/profile",
     "/users/profile/*",
-    "/add_song",
-    "/create_account",
-    "/update_admin"
-  ]
+    "/add_song"
+  ] + ADMIN_REQUIRED_ROUTES
 
   ADMIN_REQUIRED_ROUTES = [
     "/create_account",
